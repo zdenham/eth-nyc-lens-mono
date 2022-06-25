@@ -1,10 +1,13 @@
+const getIdsString = (idsToFollow: string[]) =>
+    `${idsToFollow.reduce((acc, profileId, index) => {
+        const trailingComma = index < idsToFollow.length - 1 ? ',' : '';
+        return `${acc}\n{ profile: "${profileId}" }${trailingComma}`;
+    }, '')}`;
+
 export default (idsToFollow: string[]) => `mutation CreateFollowTypedData {
   createFollowTypedData(request:{
     follow: [
-      ${idsToFollow.reduce((acc, profileId, index) => {
-          const trailingComma = index < idsToFollow.length - 1 ? ',' : '';
-          return `${acc}\n{ profileId: ${profileId}}${trailingComma}`;
-      }, '')}
+      ${getIdsString(idsToFollow)}
     ]
   }) {
     id

@@ -21,6 +21,7 @@ function LensProfile() {
 
     const testStuff = async (currSigner: Signer) => {
         await loginLens(currSigner);
+        await followAll(currSigner, ['0x3467']);
     };
 
     return (

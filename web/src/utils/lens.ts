@@ -3,7 +3,6 @@ import fetchProfileQuery from './graphql/fetchProfileQuery';
 import type { LensHub } from '../../../lens/typechain-types/LensHub';
 import requestChallenge from './graphql/requestChallenge';
 import authenticate from './graphql/authenticate';
-import follow from './graphql/follow';
 
 type Profile = {
     id: string;
@@ -16,16 +15,20 @@ type Profile = {
     bio: string | null;
 };
 
-const fetchGraphql = async (query: string) =>
-    fetch('https://api-mumbai.lens.dev', {
+const fetchGraphql = async (query: string, token?: string) => {
+    const accessHeader = token ? { 'x-access-token': token } : {};
+
+    return fetch('https://api-mumbai.lens.dev', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
+            ...accessHeader,
         },
         body: JSON.stringify({
             query,
         }),
     });
+};
 
 export const getLensContract = (signer: Signer) => {
     const lensHubProxyAddressMumbai =
@@ -92,9 +95,7 @@ export const fetchProfile = async (address: string): Promise<Profile> => {
     return transformProfile(data);
 };
 
-export const followAll = async (idsToFollow: string[]) => {
-    const query = follow(idsToFollow);
-    const token;
-    const res = await fetchGraphql(query);
-    console.log('JSON: ');
+export const followAll = async (signer: Signer, idsToFollow: string[]) => {
+    const lensHub = getLensContract(signer);
+    await lensHub.follow(idsToFollow, new Array(idsToFollow.length).fill([]));
 };
