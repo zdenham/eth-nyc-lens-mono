@@ -1,10 +1,15 @@
-import { Heading } from "@chakra-ui/react";
-import { Scene } from "../components/Scene";
+import { ConnectWallet } from '../components/ConnectWallet';
+import { Container } from '../components/Container';
+import { Hero } from '../components/Hero';
+import { Scene } from '../components/Scene';
 
 const Index = () => (
     <>
         <Scene />
-        <Heading color='white'>Follow new IRL connections on Lens</Heading>
+        <Container mb='400px'>
+            <Hero flexShrink={0} />
+            <ConnectWallet flexGrow={1} />
+        </Container>
     </>
 );
 

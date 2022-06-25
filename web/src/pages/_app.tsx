@@ -3,6 +3,7 @@ import { AppProps } from 'next/app';
 
 import theme from '../theme';
 import '../global.css';
+import '@fontsource/poppins';
 import { NavBar } from '../components/NavBar';
 
 function App({ Component, pageProps }: AppProps) {

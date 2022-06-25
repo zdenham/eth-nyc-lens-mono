@@ -1,5 +1,10 @@
 * {
-    transition: 0.2s all;
+    transition: all 0.2s !important;
+}
+
+body {
+    font-family: "Poppins", sans-serif;
+    text-align: center;
 }
 
 h1 {

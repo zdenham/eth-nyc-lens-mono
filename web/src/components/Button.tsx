@@ -4,17 +4,17 @@ import React from 'react';
 export const Button: React.FC<ButtonProps> = (props) => (
     <ChakraButton
         position='relative'
+        top='0'
         fontFamily='Poppins, sans-serif'
-        color='green'
-        size='xs'
+        color='white'
+        size='md'
         rounded='full'
-        border='2px solid green'
-        shadow='lg'
-        p='8px'
-        bg='white'
-        _hover={{ shadow: 'xl', top: -2 }}
+        shadow='glow'
+        py='8px'
+        px='24px'
+        bg='green'
+        fontSize='14px'
+        _hover={{ top: '-4px' }}
         {...props}
-    >
-        {props.children}
-    </ChakraButton>
+    />
 );

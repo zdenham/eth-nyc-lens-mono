@@ -1,13 +1,13 @@
-import { HStack } from '@chakra-ui/react';
+import { HStack, Image } from '@chakra-ui/react';
 import Link from 'next/link';
 import React from 'react';
 import { navBarHeight, pagePaddingX, zIndexes } from '../constants';
-import { Image } from '@chakra-ui/react';
+
 import { ConnectWalletButton } from './ConnectWalletButton';
 
 export const NavBar: React.FC = () => (
     <HStack
-        as="header"
+        as='header'
         justifyContent='space-between'
         alignItems='center'
         top='0'
