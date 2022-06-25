@@ -14,7 +14,7 @@ export const Button: React.FC<ButtonProps> = (props) => (
         px='24px'
         bg='green'
         fontSize='14px'
-        _hover={{ top: '-4px' }}
+        _hover={{ top: '-4px', boxShadow: 'none' }}
         {...props}
     />
 );
