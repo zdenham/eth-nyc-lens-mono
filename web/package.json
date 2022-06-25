@@ -1,4 +1,5 @@
 {
+  "name": "flourish",
   "private": true,
   "scripts": {
     "dev": "next",
@@ -12,6 +13,7 @@
     "@chakra-ui/theme-tools": "^2.0.2",
     "@emotion/react": "^11.9.0",
     "@emotion/styled": "^11.9.0",
+    "@fontsource/poppins": "^4.5.8",
     "@react-three/drei": "^9.14.3",
     "@react-three/fiber": "^8.0.27",
     "framer-motion": "^6.3.0",
