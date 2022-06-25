@@ -5,7 +5,7 @@ const onPositionUpdate = async (
     profile: Profile
 ) => {
     const myUser = {
-        locaiton: {
+        location: {
             lat: position.coords.latitude,
             long: position.coords.longitude,
         },
