@@ -1,3 +1,4 @@
+/* eslint-disable prefer-destructuring */
 import React, { useEffect, useRef } from 'react';
 import {
     Canvas as ThreeCanvas, MeshProps, SphereGeometryProps, useFrame, useLoader
@@ -29,23 +30,30 @@ const Sphere: React.FC<SphereProps> = ({ position }) => {
         const time = clock.getElapsedTime();
 
         if (mesh.current) {
+            // @ts-ignore
             mesh.current.position.y = position[1] + Math.sin(time) * 0.15;
+
+            // @ts-ignore
             mesh.current.rotation.x += 0.003;
+            // @ts-ignore
             mesh.current.rotation.z += 0.003;
         }
     });
 
     useEffect(() => {
         if (mesh.current) {
+            // @ts-ignore
             mesh.current.position.x = position[0];
+            // @ts-ignore
             mesh.current.position.y = position[1];
+            // @ts-ignore
             mesh.current.position.z = position[2];
         }
     }, [mesh]);
 
     return (
-        <mesh ref={mesh}>
-            <sphereGeometry ref={geometry} args={[1]} />
+        <mesh ref={mesh as any}>
+            <sphereGeometry ref={geometry as any} args={[1]} />
             <meshStandardMaterial map={texture} />
         </mesh>
     );
@@ -65,7 +73,7 @@ const Line: React.FC<LineProps> = ({ points }) => {
     });
 
     return (
-        <line ref={ref}>
+        <line ref={ref as any}>
             <bufferGeometry />
             <lineBasicMaterial color='green' />
         </line>

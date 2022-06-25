@@ -5,11 +5,8 @@ export const navBarFooterHeight = '60px';
 
 export const zIndexes = {
     splash: 50,
-    cursor: 40,
-    toggle: 30,
-    mediaPlayer: 20,
+    footer: 10,
     navBar: 10,
-    teamCanvas: -1,
     canvas: -10
 };
 
