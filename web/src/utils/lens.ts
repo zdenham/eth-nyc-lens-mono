@@ -1,4 +1,6 @@
 import { ethers, Signer } from 'ethers';
+import { useState, useCallback } from 'react';
+import { useSigner } from 'wagmi';
 import fetchProfileQuery from './graphql/fetchProfileQuery';
 import type { LensHub } from '../../../lens/typechain-types/LensHub';
 import requestChallenge from './graphql/requestChallenge';
@@ -85,17 +87,54 @@ const transformProfile = (response: any): Profile => {
     };
 };
 
-export const fetchProfile = async (address: string): Promise<Profile> => {
-    const query = fetchProfileQuery(address);
+export const useFetchProfile = () => {
+    const [isFetching, setIsFetching] = useState(false);
+    const [profile, setProfile] = useState<Profile | null>(null);
+    const [error, setError] = useState('');
+    const fetchProfile = async (address: string) => {
+        try {
+            setError('');
+            setIsFetching(true);
 
-    const res = await fetchGraphql(query);
+            const query = fetchProfileQuery(address);
+            const res = await fetchGraphql(query);
+            const data = await res.json();
 
-    const data = await res.json();
+            setProfile(transformProfile(data));
+            setIsFetching(false);
+        } catch (e) {
+            setError(e.message);
+        }
+    };
 
-    return transformProfile(data);
+    return [fetchProfile, profile, isFetching, error];
 };
 
-export const followAll = async (signer: Signer, idsToFollow: string[]) => {
-    const lensHub = getLensContract(signer);
-    await lensHub.follow(idsToFollow, new Array(idsToFollow.length).fill([]));
+export const useFollowAll = () => {
+    const [isFetching, setIsFetching] = useState(false);
+    const [error, setError] = useState('');
+
+    const { data: signer } = useSigner();
+
+    const followAll = useCallback(
+        async (idsToFollow: string[]) => {
+            try {
+                setError('');
+                setIsFetching(true);
+
+                const lensHub = getLensContract(signer);
+                await lensHub.follow(
+                    idsToFollow,
+                    new Array(idsToFollow.length).fill([])
+                );
+
+                setIsFetching(false);
+            } catch (e) {
+                setError(e.message);
+            }
+        },
+        [setError, setIsFetching, signer]
+    );
+
+    return [followAll, isFetching, error];
 };
