@@ -1,7 +1,6 @@
 import { task } from 'hardhat/config';
 import { LensHub__factory } from '../typechain-types';
 import { ProtocolState, waitForTx, initEnv, getAddrs, ZERO_ADDRESS } from './helpers/utils';
-import { CreateProfileDataStruct } from '../typechain-types/LensHub';
 
 task('setup', 'unpauses the protocol').setAction(async ({}, hre) => {
   const [governance, , tester1, tester2, tester3] = await initEnv(hre);

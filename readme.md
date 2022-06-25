@@ -10,4 +10,4 @@ https://docs.lens.xyz/docs/deploying-the-protocol
 npx hardhat setup --network localhost
 ```
 
-3. For local development import the hardhat network private keys into your metamask and add the hardhat network to your metamask
+3. For local development import the hardhat network private keys into your metamask and add the hardhat network to your metamask. NOTE: the tester keys can be found in `test-wallets.ts`
