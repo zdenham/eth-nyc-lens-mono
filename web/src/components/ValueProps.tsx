@@ -1,39 +1,43 @@
 /* eslint-disable max-len */
-import { Box, BoxProps, HStack, Image, Text, VStack } from '@chakra-ui/react';
+import { Box, BoxProps, Heading as ChakraHeading, HStack, Image, Text, VStack } from '@chakra-ui/react';
 import React from 'react';
-import { pagePaddingX } from '../constants';
+import { footerHeight, pagePaddingX } from '../constants';
+import { Filled } from './Filled';
+import { Heading } from './Heading';
 
 const valueProps: ValuePropProps[] = [{
     src: '/value-props/users.svg',
-    description: 'A group of people that just met are forced to connect in pairwise fashion.'
+    title: 'Instant Connection',
+    description: 'There’s no quicker way for groups of people to connect.'
 }, {
     src: '/value-props/apps.svg',
-    description: 'Each connection may have a different social media platform preference, e.g. Telegram, Twitter, Discord?'
+    title: 'Powered by Lens',
+    description: 'Connect on Lens to take your network outside of walled gardens.'
 }, {
-    src: '/value-props/warning.svg',
-    description: ' If usernames are typed, there could be typos.'
-}, {
-    src: '/value-props/id.svg',
-    description: 'Use one ID everywhere and bring your network with you.'
-}
-];
+    src: '/value-props/exclamation.svg',
+    title: 'Stay Safe',
+    description: 'Remove the possibility of typos or malicious QR code scans.'
+}];
 
 interface ValuePropProps {
     readonly src: string;
+    readonly title: string;
     readonly description: string;
 }
 
-const ValueProp: React.FC<ValuePropProps> = ({ src, description }) => (
-    <VStack maxW='200px'>
+const ValueProp: React.FC<ValuePropProps> = ({ src, title, description }) => (
+    <VStack maxW='300px'>
         <Image src={src} boxSize='24px' />
+        <ChakraHeading as='h2' fontSize='16px'>{title}</ChakraHeading>
         <Text>{description}</Text>
     </VStack>
 );
 
 export const ValueProps: React.FC<BoxProps> = (props) => (
-    <Box backdropFilter='blur(10px)' p='20px' border='1px solid gray.100' px={pagePaddingX} {...props}>
-        <HStack spacing='20px' justifyContent='center' alignItems='flex-start'>
-            {valueProps.map((valueProp) => <ValueProp {...valueProp} />)}
+    <Box px={pagePaddingX} py='100px' mt='-50px' bg='linear-gradient(white, #A7C395)' mb={footerHeight} {...props}>
+        <Heading fontSize='32px'>Onboarding IRL to <Filled>Lens</Filled></Heading>
+        <HStack mt='60px' justifyContent='space-evenly' alignItems='flex-start'>
+            {valueProps.map((valueProp) => <ValueProp key={valueProp.title} {...valueProp} />)}
         </HStack>
     </Box>
 );

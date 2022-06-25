@@ -20,6 +20,8 @@ export const NavBar: React.FC = () => {
 
     return (
         <HStack
+            position='fixed'
+            w='100vw'
             as='header'
             justifyContent='space-between'
             alignItems='center'
@@ -33,12 +35,12 @@ export const NavBar: React.FC = () => {
         >
             <Link href='/'>
                 <a>
-                    <Image src='/wordmark.png' alt='Flourish logo' h='40px' />
+                    <Image src='/wordmark.svg' alt='Flourish logo' h='40px' />
                 </a>
             </Link>
             {data?.address ? (
                 <HStack>
-                    <Button bg='white' _hover={{ bg: 'white' }} onClick={goToApp}>
+                    <Button bg='transparent' _hover={{ bg: 'white' }} onClick={goToApp}>
                         <Avatar name={data.address} src='/user.svg' bg='white' boxSize='24px' />
                         <Text as='span' ml='4px'>
                             {`${data.address.slice(0, 4)}...${data.address.slice(-4)}`}

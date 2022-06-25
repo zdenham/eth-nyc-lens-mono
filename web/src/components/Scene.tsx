@@ -6,10 +6,9 @@ import {
 import { Box, BoxProps } from '@chakra-ui/react';
 import { TextureLoader } from 'three/src/loaders/TextureLoader';
 import * as THREE from 'three';
-import { zIndexes } from '../constants';
 
 const Canvas: React.FC<BoxProps> = ({ children }) => (
-    <Box position='fixed' zIndex={zIndexes.canvas}>
+    <Box position='absolute'>
         <ThreeCanvas camera={{ position: [0, 0, 5] }}>
             {children}
         </ThreeCanvas>
@@ -81,14 +80,14 @@ const Line: React.FC<LineProps> = ({ points }) => {
 };
 
 export const Scene: React.FC = () => (
-    <Canvas w='100vw' h='100vh'>
+    <Canvas minW='100vw' minH='100vh' style={{ marginTop: 40 }}>
         <ambientLight intensity={0.2} />
         <directionalLight />
         <Sphere position={[-10, 3, -10]} />
-        <Line points={[[-10, 3, -10], [6, 0, -1]]} />
-        <Sphere position={[6, 0, -1]} />
-        <Line points={[[6, 0, -1], [-3, -1, 3]]} />
-        <Sphere position={[-3, -1, 3]} />
-        <Line points={[[-3, -1, 3], [-10, 3, -10]]} />
+        <Line points={[[-10, 3, -10], [6, -1, -1]]} />
+        <Sphere position={[6, -1, -1]} />
+        <Line points={[[6, -1, -1], [-3, -1, 1]]} />
+        <Sphere position={[-3, -1, 1]} />
+        <Line points={[[-3, -1, 1], [-10, 3, -10]]} />
     </Canvas>
 );
