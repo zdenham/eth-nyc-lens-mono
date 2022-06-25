@@ -6,6 +6,7 @@ import { createClient, WagmiConfig } from 'wagmi';
 
 import theme from '../theme';
 import '../global.css';
+
 import { NavBar } from '../components/NavBar';
 import { ConnectWalletModalContext } from '../hooks/useConnectWalletModal';
 import { ConnectModal } from '../components/ConnectModal';
@@ -24,7 +25,9 @@ function App({ Component, pageProps }: AppProps) {
     return (
         <ChakraProvider resetCSS theme={theme}>
             <WagmiConfig client={wagmiClient}>
-                <ConnectWalletModalContext.Provider value={connectWalletModalContextProviderValue}>
+                <ConnectWalletModalContext.Provider
+                    value={connectWalletModalContextProviderValue}
+                >
                     <NavBar />
                     <Component {...pageProps} />
                     <Footer />
