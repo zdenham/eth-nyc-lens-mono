@@ -35,7 +35,7 @@ export async function deployWithVerify(
 ): Promise<Contract> {
   const deployedContract = await deployContract(tx);
   let count = 0;
-  let maxTries = 8;
+  const maxTries = 8;
   const runtimeHRE = require('hardhat');
   while (true) {
     await delay(10000);
@@ -73,9 +73,11 @@ export async function initEnv(hre: HardhatRuntimeEnvironment): Promise<SignerWit
   const accounts = await ethers.getSigners(); // This returns an array of the default signers connected to the hre's ethers instance
   const governance = accounts[1];
   const treasury = accounts[2];
-  const user = accounts[3];
+  const tester1 = accounts[3];
+  const tester2 = accounts[4];
+  const tester3 = accounts[5];
 
-  return [governance, treasury, user];
+  return [governance, treasury, tester1, tester2, tester3];
 }
 
 async function delay(ms: number) {
