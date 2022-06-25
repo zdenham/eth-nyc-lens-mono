@@ -4,7 +4,7 @@ import type { LensHub } from '../../../lens/typechain-types/LensHub';
 import requestChallenge from './graphql/requestChallenge';
 import authenticate from './graphql/authenticate';
 
-type Profile = {
+export type Profile = {
     id: string;
     handle: string;
     address: string;

@@ -10,18 +10,27 @@ import {
 
 import { getDefaultProvider, Signer } from 'ethers';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import type { LensHub } from '../../../lens/typechain-types/LensHub';
 
 import Connect from '../components/web3/Connect';
 import { fetchProfile, followAll, loginLens } from '../utils/lens';
+import { NavigationTracker, startListening } from '../utils/navigation';
 
 function LensProfile() {
     const { data: signer } = useSigner();
 
-    const testStuff = async (currSigner: Signer) => {
-        await loginLens(currSigner);
-        await followAll(currSigner, ['0x3467']);
+    const testStuff = async () => {
+        startListening({
+            id: 'hello',
+            handle: 'hello',
+            address: 'hello',
+            numFollowers: 1,
+            numFollowing: 1,
+            imageUrl: 'hello',
+            name: 'hello',
+            bio: 'hello',
+        });
     };
 
     return (
