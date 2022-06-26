@@ -38,7 +38,8 @@ export const useLocation = () => {
 // TODO - dedoop against follows
 export const useCloseUsers = () => {
     const [error, setError] = useState('');
-    const [closeUsers, setCloseUsers] = useState<ProfileWithLocation[] | null>(null);
+    const [closeUsers, setCloseUsers] = useState<ProfileWithLocation[]>([]);
+    const [lastUpdatedTimestamp, setLastUpdatedTimeStamp] = useState(Date.now());
     const { profile } = useProfile();
     const { location } = useLocation();
 
@@ -47,6 +48,8 @@ export const useCloseUsers = () => {
             if (!profile || !location) {
                 return;
             }
+
+            setLastUpdatedTimeStamp(Date.now());
 
             const myUser: ProfileWithLocation = {
                 ...profile,
@@ -70,16 +73,17 @@ export const useCloseUsers = () => {
         } catch (e) {
             setError(e.message);
         }
-    }, [profile, location]);
+    }, [profile, location, setLastUpdatedTimeStamp, setCloseUsers]);
 
     useEffect(() => {
         // poll for close users every 3 seconds
-        const interval = setInterval(findCloseUsers, 3000);
+        findCloseUsers();
+        const interval = setInterval(findCloseUsers, 7000);
 
         return () => {
             clearInterval(interval);
         };
-    }, [profile, location]);
+    }, [profile, location, findCloseUsers]);
 
-    return { closeUsers, error };
+    return { closeUsers, error, lastUpdatedTimestamp };
 };

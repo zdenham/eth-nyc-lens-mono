@@ -1,13 +1,24 @@
 import { Avatar, Button, ButtonProps, HStack, Image, Text, VStack } from '@chakra-ui/react';
 import React from 'react';
 import { useMediaQuery } from '../hooks/useMediaQuery';
-import { ProfileModel } from '../hooks/useProfiles';
+import formatTimeDifference from '../utils/formatTimeDifference';
+import type { Profile as ProfileModel } from '../utils/lens';
 
 export interface ProfileProps extends ProfileModel, Omit<ButtonProps, 'name' | 'id'> {
     readonly selected?: boolean;
+    readonly lastSeenTimestamp?: number;
 }
 
-export const Profile: React.FC<ProfileProps> = ({ selected, imageUrl, name, bio, handle, onClick, ...otherProps }) => {
+export const Profile: React.FC<ProfileProps> = ({
+    selected,
+    imageUrl,
+    name,
+    bio,
+    handle,
+    lastSeenTimestamp,
+    onClick,
+    ...otherProps
+}) => {
     const isMobile = useMediaQuery(768);
 
     return (
@@ -51,7 +62,7 @@ export const Profile: React.FC<ProfileProps> = ({ selected, imageUrl, name, bio,
                     <HStack pt='8px' spacing='4px'>
                         <Image src='/sparkles.svg' boxSize='16px' />
                         <Text as='span' color='gray.400' fontSize='12px'>
-                            Discovered <b>5</b> mins ago
+                            Refreshed {formatTimeDifference(lastSeenTimestamp)} ago
                         </Text>
                     </HStack>
                 </VStack>
