@@ -63,13 +63,13 @@ export const ProfileDiscovery: React.FC<BoxProps> = ({ ...otherProps }) => {
                                 onClick={
                                     ids.includes(profile.id)
                                         ? () => {
-                                              setIds((state) => state.filter((id) => id !== profile.id));
-                                              setUnchecked({ ...unChecked, [profile.id]: true });
-                                          }
+                                            setIds((state) => state.filter((id) => id !== profile.id));
+                                            setUnchecked({ ...unChecked, [profile.id]: true });
+                                        }
                                         : () => {
-                                              setIds((state) => [...state, profile.id]);
-                                              setUnchecked({ ...unChecked, [profile.id]: false });
-                                          }
+                                            setIds((state) => [...state, profile.id]);
+                                            setUnchecked({ ...unChecked, [profile.id]: false });
+                                        }
                                 }
                             />
                         </ListItem>

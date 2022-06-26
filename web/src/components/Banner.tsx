@@ -49,8 +49,8 @@ export const Banner: React.FC = () => {
     const switchToMumbai = useCallback(() => switchNetwork(80001), [switchNetwork]);
 
     return (
-        activeChain &&
-        activeChain.id !== 137 && (
+        activeChain
+        && activeChain.id !== 137 && (
             <WarningBanner buttonText='Switch Network' buttonOnClick={switchToMumbai}>
                 <>
                     You’re connected to the <b>{activeChain.name}</b> network. Flourish is live on <b>Polygon</b>.
