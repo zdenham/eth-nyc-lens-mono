@@ -5,6 +5,25 @@ import fetchProfileQuery from './graphql/fetchProfileQuery';
 import type { LensHub } from '../../../lens/typechain-types/LensHub';
 import requestChallenge from './graphql/requestChallenge';
 import authenticate from './graphql/authenticate';
+import following from './graphql/following';
+
+export type Location = {
+    lat: number;
+    long: number;
+};
+
+export type ProfileWithLocation = {
+    location: Location;
+    lastSeenTimestamp: number;
+    id: string;
+    handle: string;
+    address: string;
+    numFollowers: number;
+    numFollowing: number;
+    imageUrl: string;
+    name: string;
+    bio: string;
+};
 
 export type Profile = {
     id: string;
@@ -85,6 +104,18 @@ const transformProfile = (response: any): Profile => {
         numFollowing: lensProfile.stats.totalFollowing,
         imageUrl: lensProfile.picture?.original?.url || null,
     };
+};
+
+export const filterOutFollowedUsers = async (
+    myAddress: string,
+    users: ProfileWithLocation[]
+): Promise<ProfileWithLocation[]> => {
+    const res = await fetchGraphql(following(myAddress));
+    const { data } = await res.json();
+
+    const followedIds = data.following.items.map((item) => item.profile.id);
+
+    return users.filter((user) => !followedIds.includes(user.id));
 };
 
 export const useProfile = () => {

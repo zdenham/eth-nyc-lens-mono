@@ -1,23 +1,10 @@
 import { useEffect, useState, useCallback } from 'react';
-import { Profile, useProfile } from './lens';
-
-type ProfileWithLocation = {
-    location: { lat: number; long: number };
-    lastSeenTimestamp: number;
-    id: string;
-    handle: string;
-    address: string;
-    numFollowers: number;
-    numFollowing: number;
-    imageUrl: string;
-    name: string;
-    bio: string;
-};
-
-type Location = {
-    lat: number;
-    long: number;
-};
+import {
+    ProfileWithLocation,
+    Location,
+    useProfile,
+    filterOutFollowedUsers,
+} from './lens';
 
 export const useLocation = () => {
     const [err, setErr] = useState('');
@@ -84,7 +71,12 @@ export const useCloseUsers = () => {
 
             const { data } = await res.json();
 
-            setCloseUsers(data);
+            const usersToDiscover = await filterOutFollowedUsers(
+                profile.address,
+                data
+            );
+
+            setCloseUsers(usersToDiscover);
         } catch (e) {
             setError(e.message);
         }
