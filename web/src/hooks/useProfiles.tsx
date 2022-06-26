@@ -4,8 +4,8 @@ export interface ProfileModel {
     id: string;
     handle: string;
     address: string;
-    numFollowers: number;
-    numFollowing: number;
+    numFollowers?: number;
+    numFollowing?: number;
     imageUrl: string | null;
     name: string | null;
     bio: string | null;

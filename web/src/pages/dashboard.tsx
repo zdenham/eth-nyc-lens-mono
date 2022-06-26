@@ -1,29 +1,34 @@
-import { Image, Text, VStack } from '@chakra-ui/react';
+import { Flex, HStack, Image, Text } from '@chakra-ui/react';
+import { useState } from 'react';
+import { Container } from '../components/Container';
+import { FollowFeed } from '../components/FollowFeed';
 import { Heading } from '../components/Heading';
-import { ProfileList } from '../components/ProfileList';
-import { navBarHeight } from '../constants';
-import { useProfiles } from '../hooks/useProfiles';
+import { ProfileDiscovery } from '../components/ProfileDiscovery';
+import { footerHeight } from '../constants';
 
-const LoadingScreen = () => (
-    <VStack spacing='20px'>
-        <Heading>Searching for Profiles...</Heading>
-        <Text>Be sure to enable Bluetooth in your browser!</Text>
-        <Image src='/lens-loading-compressed.gif' />
-    </VStack>
-);
+// const LoadingScreen = () => (
+//     <VStack spacing='20px'>
+//         <Heading>Searching for Profiles...</Heading>
+//         <Text>Be sure to enable Bluetooth in your browser!</Text>
+//         <Image src='/lens-loading-compressed.gif' />
+//     </VStack>
+// );
 
 const Dashboard = () => {
-    // const [isBluetoothConnected, setIsBluetoothConnected] = useState(false);
-    const { profiles } = useProfiles();
+    const [timeSinceLastUpdate] = useState(27);
 
     return (
-        <VStack justifyContent='space-between' h={`calc(100vh - ${navBarHeight})`} py='40px'>
-            {profiles ? (
-                <ProfileList profiles={profiles} />
-            ) : (
-                <LoadingScreen />
-            )}
-        </VStack>
+        <Container mb={footerHeight}>
+            <Heading>Your Dashboard</Heading>
+            <HStack>
+                <Image src='/clock.svg' boxSize='16px' />
+                <Text fontSize='14px' color='gray.400'>Last updated {timeSinceLastUpdate} secs ago</Text>
+            </HStack>
+            <Flex w='100%' mt='40px' borderTop='2px solid #ECECEC' textAlign='left'>
+                <ProfileDiscovery w='65%' />
+                <FollowFeed w='35%' borderLeft='2px solid #ECECEC' />
+            </Flex>
+        </Container>
     );
 };
 

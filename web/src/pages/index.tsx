@@ -30,7 +30,7 @@ const Index = () => {
 
     return (
         <>
-            <Container>
+            <Container justifyContent='space-between'>
                 <Scene />
                 <Hero flexShrink={0} />
                 <VStack justifyContent='center' flexGrow={1}>
