@@ -5,7 +5,6 @@ import {
 } from '@react-three/fiber';
 import { Box, BoxProps } from '@chakra-ui/react';
 import { TextureLoader } from 'three/src/loaders/TextureLoader';
-import * as THREE from 'three';
 
 const Canvas: React.FC<BoxProps> = ({ children }) => (
     <Box position='absolute'>
@@ -30,7 +29,7 @@ const Sphere: React.FC<SphereProps> = ({ position }) => {
 
         if (mesh.current) {
             // @ts-ignore
-            mesh.current.position.y = position[1] + Math.sin(time) * 0.15;
+            mesh.current.position.y = position[1] + Math.sin(time) * 0.1;
 
             // @ts-ignore
             mesh.current.rotation.x += 0.003;
@@ -58,36 +57,10 @@ const Sphere: React.FC<SphereProps> = ({ position }) => {
     );
 };
 
-interface LineProps {
-    readonly points: [number, number, number][];
-}
-
-const Line: React.FC<LineProps> = ({ points }) => {
-    const ref = useRef<THREE.Line>();
-
-    useFrame(() => {
-        if (ref.current) {
-            ref.current.geometry.setFromPoints(points.map((point) => new THREE.Vector3(...point)));
-        }
-    });
-
-    return (
-        <line ref={ref as any}>
-            <bufferGeometry />
-            <lineBasicMaterial color='green' />
-        </line>
-    );
-};
-
 export const Scene: React.FC = () => (
     <Canvas minW='100vw' minH='100vh' style={{ marginTop: 40 }}>
         <ambientLight intensity={0.2} />
         <directionalLight />
-        <Sphere position={[-10, 3, -10]} />
-        <Line points={[[-10, 3, -10], [6, -1, -1]]} />
-        <Sphere position={[6, -1, -1]} />
-        <Line points={[[6, -1, -1], [-3, -1, 1]]} />
-        <Sphere position={[-3, -1, 1]} />
-        <Line points={[[-3, -1, 1], [-10, 3, -10]]} />
+        <Sphere position={[0, -1, 4]} />
     </Canvas>
 );

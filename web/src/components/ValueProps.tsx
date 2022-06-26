@@ -2,8 +2,6 @@
 import { Box, BoxProps, Heading as ChakraHeading, HStack, Image, Text, VStack } from '@chakra-ui/react';
 import React from 'react';
 import { footerHeight, pagePaddingX } from '../constants';
-import { Filled } from './Filled';
-import { Heading } from './Heading';
 
 const valueProps: ValuePropProps[] = [{
     src: '/value-props/users.svg',
@@ -27,17 +25,18 @@ interface ValuePropProps {
 
 const ValueProp: React.FC<ValuePropProps> = ({ src, title, description }) => (
     <VStack maxW='300px'>
-        <Image src={src} boxSize='24px' />
-        <ChakraHeading as='h2' fontSize='16px'>{title}</ChakraHeading>
+        <HStack>
+            <Image src={src} boxSize='24px' />
+            <ChakraHeading as='h2' fontSize='16px'>{title}</ChakraHeading>
+        </HStack>
         <Text>{description}</Text>
     </VStack>
 );
 
 export const ValueProps: React.FC<BoxProps> = (props) => (
-    <Box px={pagePaddingX} py='100px' mt='-50px' bg='linear-gradient(white, #A7C395)' mb={footerHeight} {...props}>
-        <Heading fontSize='32px'>Onboarding IRL to <Filled>Lens</Filled></Heading>
-        <HStack mt='60px' justifyContent='space-evenly' alignItems='flex-start'>
+    <Box px={pagePaddingX} mb={footerHeight} {...props}>
+        <VStack justifyContent='space-evenly' alignItems='flex-start' spacing='40px'>
             {valueProps.map((valueProp) => <ValueProp key={valueProp.title} {...valueProp} />)}
-        </HStack>
+        </VStack>
     </Box>
 );

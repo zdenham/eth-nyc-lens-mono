@@ -1,7 +1,7 @@
 export const pagePaddingX = '10%';
 
 export const navBarHeight = '80px';
-export const footerHeight = '44px';
+export const footerHeight = '64px';
 
 export const zIndexes = {
     splash: 50,
