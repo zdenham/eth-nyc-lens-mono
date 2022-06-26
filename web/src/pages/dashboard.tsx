@@ -1,12 +1,10 @@
 import { Flex, HStack, Image, Text, Tabs, TabList, TabPanels, Tab, TabPanel } from '@chakra-ui/react';
-import { useEffect, useState } from 'react';
 import { Container } from '../components/Container';
 import { FollowFeed } from '../components/FollowFeed';
 import { Heading } from '../components/Heading';
 import { ProfileDiscovery } from '../components/ProfileDiscovery';
 import { footerHeight } from '../constants';
 import { useMediaQuery } from '../hooks/useMediaQuery';
-import formatTimeDifference from '../utils/formatTimeDifference';
 import { useCloseUsers } from '../utils/navigation';
 
 // const LoadingScreen = () => (
