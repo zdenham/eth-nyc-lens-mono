@@ -57,7 +57,7 @@ export const useCloseUsers = () => {
                 lastSeenTimestamp: Date.now(),
             };
 
-            const res = await fetch('https://flourish-api.onrender.com/users-close-to-me', {
+            const res = await fetch('https://flourish-api-prod.onrender.com/users-close-to-me', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
