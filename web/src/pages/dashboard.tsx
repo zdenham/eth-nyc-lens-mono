@@ -22,7 +22,7 @@ const Dashboard = () => {
             <Heading>Your Dashboard</Heading>
             <HStack>
                 <Image src='/clock.svg' boxSize='16px' />
-                <Text fontSize='14px' color='gray.400'>Last updated {timeSinceLastUpdate} secs ago</Text>
+                <Text fontSize='14px' color='gray.400'>Last updated <b>{timeSinceLastUpdate}</b> secs ago</Text>
             </HStack>
             <Flex w='100%' mt='40px' borderTop='2px solid #ECECEC' textAlign='left'>
                 <ProfileDiscovery w='65%' />

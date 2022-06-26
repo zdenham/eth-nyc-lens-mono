@@ -19,7 +19,7 @@ export const Button: React.FC<ButtonProps> = ({ kind = 'primary', ...props }) =>
         px='24px'
         bg={kind === 'primary' ? 'green' : 'white'}
         fontSize='14px'
-        _hover={{ top: '-4px', boxShadow: 'none' }}
+        _hover={{ top: props.disabled ? undefined : '-4px', boxShadow: props.disabled ? undefined : 'none' }}
         {...props}
     />
 );

@@ -55,9 +55,9 @@ const FeedItem = ({ src, name, bio, handle }) => {
                         <Text as='span'>{handle}</Text>
                     </HStack>
                     <Text fontSize='14px' pt='4px'>{bio}</Text>
-                    <HStack pt='8px'>
+                    <HStack pt='8px' spacing='4px'>
                         <Image src='/clock.svg' boxSize='16px' />
-                        <Text as='span' color='gray.400' fontSize='12px'>Followed 5 mins ago</Text>
+                        <Text as='span' color='gray.400' fontSize='12px'>Followed <b>5</b> mins ago</Text>
                     </HStack>
                 </VStack>
             </HStack>
@@ -74,7 +74,7 @@ export const FollowFeed: React.FC<BoxProps> = (props) => {
                 <Text>Look through all the friends you made through Flourish. Interact with a profile to visit their <Link href='https://lenster.xyz' target='_blank' textDecor='underline'>Lenster</Link> profile.</Text>
                 <HStack mt='40px'>
                     <Image src='/users.svg' boxSize='16px' />
-                    <Text color='gray.400'>5 profiles followed via Flourish</Text>
+                    <Text color='gray.400'><b>5</b> profiles followed via Flourish</Text>
                 </HStack>
             </Box>
             <OrderedList ml='0'>
