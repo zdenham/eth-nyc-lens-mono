@@ -13,10 +13,10 @@ export interface ProfileProps extends ProfileModel, Omit<ButtonProps, 'name' | '
 export const Profile: React.FC<ProfileProps> = ({
     selected,
     imageUrl,
+    address,
     name,
     bio,
     handle,
-    address,
     lastSeenTimestamp,
     numFollowers,
     numFollowing,
