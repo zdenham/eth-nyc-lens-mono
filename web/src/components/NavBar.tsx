@@ -9,12 +9,7 @@ import { ConnectWalletButton } from './ConnectWalletButton';
 
 export const NavBar: React.FC = () => {
     const { push } = useRouter();
-    const account = useAccount({
-        onSuccess(data) {
-            console.log('Success from navbar', data);
-        },
-    });
-    const { data } = account;
+    const { data } = useAccount();
 
     const goToApp = useCallback(() => push('/dashboard'), []);
 
@@ -44,18 +39,18 @@ export const NavBar: React.FC = () => {
                 </a>
             </Link>
             {(mounted || null)
-            && (data?.address ? (
-                <HStack>
-                    <Button bg='transparent' _hover={{ bg: 'white' }} onClick={goToApp}>
-                        <Avatar name={data.address} src='/user.svg' bg='white' boxSize='24px' />
-                        <Text as='span' ml='4px'>
-                            {`${data.address.slice(0, 4)}...${data.address.slice(-4)}`}
-                        </Text>
-                    </Button>
-                </HStack>
-            ) : (
-                <ConnectWalletButton />
-            ))}
+                && (data?.address ? (
+                    <HStack>
+                        <Button bg='transparent' _hover={{ bg: 'white' }} onClick={goToApp}>
+                            <Avatar name={data.address} src='/user.svg' bg='white' boxSize='24px' />
+                            <Text as='span' ml='4px'>
+                                {`${data.address.slice(0, 4)}...${data.address.slice(-4)}`}
+                            </Text>
+                        </Button>
+                    </HStack>
+                ) : (
+                    <ConnectWalletButton />
+                ))}
         </HStack>
     );
 };
