@@ -1,10 +1,29 @@
 import { ethers, Signer } from 'ethers';
-import { useState, useCallback } from 'react';
+import { useState, useCallback, useEffect } from 'react';
 import { useSigner } from 'wagmi';
 import fetchProfileQuery from './graphql/fetchProfileQuery';
 import type { LensHub } from '../../../lens/typechain-types/LensHub';
 import requestChallenge from './graphql/requestChallenge';
 import authenticate from './graphql/authenticate';
+import following from './graphql/following';
+
+export type Location = {
+    lat: number;
+    long: number;
+};
+
+export type ProfileWithLocation = {
+    location: Location;
+    lastSeenTimestamp: number;
+    id: string;
+    handle: string;
+    address: string;
+    numFollowers: number;
+    numFollowing: number;
+    imageUrl: string;
+    name: string;
+    bio: string;
+};
 
 export type Profile = {
     id: string;
@@ -87,10 +106,24 @@ const transformProfile = (response: any): Profile => {
     };
 };
 
-export const useFetchProfile = () => {
+export const filterOutFollowedUsers = async (
+    myAddress: string,
+    users: ProfileWithLocation[]
+): Promise<ProfileWithLocation[]> => {
+    const res = await fetchGraphql(following(myAddress));
+    const { data } = await res.json();
+
+    const followedIds = data.following.items.map((item) => item.profile.id);
+
+    return users.filter((user) => !followedIds.includes(user.id));
+};
+
+export const useProfile = () => {
     const [isFetching, setIsFetching] = useState(false);
     const [profile, setProfile] = useState<Profile | null>(null);
     const [error, setError] = useState('');
+    const { data: signer } = useSigner();
+
     const fetchProfile = async (address: string) => {
         try {
             setError('');
@@ -103,11 +136,22 @@ export const useFetchProfile = () => {
             setProfile(transformProfile(data));
             setIsFetching(false);
         } catch (e) {
+            console.log('ERROR: ', e);
             setError(e.message);
         }
     };
 
-    return [fetchProfile, profile, isFetching, error];
+    useEffect(() => {
+        if (!signer) {
+            return;
+        }
+
+        signer.getAddress().then((address) => {
+            fetchProfile(address);
+        });
+    }, [signer]);
+
+    return { profile, isFetching, error };
 };
 
 export const useFollowAll = () => {
@@ -122,11 +166,17 @@ export const useFollowAll = () => {
                 setError('');
                 setIsFetching(true);
 
+                if (!signer) {
+                    throw new Error('No Signer available');
+                }
+
                 const lensHub = getLensContract(signer);
-                await lensHub.follow(
+                const tx = await lensHub.follow(
                     idsToFollow,
                     new Array(idsToFollow.length).fill([])
                 );
+
+                await tx.wait();
 
                 setIsFetching(false);
             } catch (e) {
@@ -136,5 +186,5 @@ export const useFollowAll = () => {
         [setError, setIsFetching, signer]
     );
 
-    return [followAll, isFetching, error];
+    return { followAll, isFetching, error };
 };

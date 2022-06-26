@@ -1,41 +1,20 @@
-import {
-    WagmiConfig,
-    createClient,
-    useAccount,
-    useConnect,
-    useDisconnect,
-    useContract,
-    useSigner,
-} from 'wagmi';
+import { WagmiConfig, createClient } from 'wagmi';
 
 import { getDefaultProvider, Signer } from 'ethers';
 
-import { useState, useEffect } from 'react';
-import type { LensHub } from '../../../lens/typechain-types/LensHub';
-
-import Connect from '../components/web3/Connect';
-import { fetchProfile, followAll, loginLens } from '../utils/lens';
-import { NavigationTracker, startListening } from '../utils/navigation';
+import { useEffect } from 'react';
+import { useCloseUsers } from '../utils/navigation';
 
 function LensProfile() {
-    const { data: signer } = useSigner();
+    const { closeUsers } = useCloseUsers();
 
-    const testStuff = async () => {
-        startListening({
-            id: 'hello',
-            handle: 'hello',
-            address: 'hello',
-            numFollowers: 1,
-            numFollowing: 1,
-            imageUrl: 'hello',
-            name: 'hello',
-            bio: 'hello',
-        });
-    };
+    useEffect(() => {
+        console.log('THE CLOSE USERS!!', closeUsers);
+    }, [closeUsers]);
 
     return (
         <div>
-            <button type="button" onClick={() => testStuff(signer)}>
+            <button type="button" onClick={() => testStuff()}>
                 Test Stuff
             </button>
         </div>
@@ -51,8 +30,7 @@ const Web3Stuff = () => {
 
     return (
         <WagmiConfig client={client}>
-            <Connect />
-
+            <div style={{ height: 200 }} />
             <LensProfile />
         </WagmiConfig>
     );
