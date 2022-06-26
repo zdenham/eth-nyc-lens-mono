@@ -5,7 +5,7 @@ import {
 import React, { useCallback, useEffect } from 'react';
 import { useAccount, useConnect } from 'wagmi';
 import { MetaMaskConnector } from 'wagmi/connectors/metaMask';
-// import { WalletConnectConnector } from 'wagmi/connectors/walletConnect';
+import { WalletConnectConnector } from 'wagmi/connectors/walletConnect';
 import { WalletButton } from './WalletButton';
 
 export interface ConnectModalProps {
@@ -15,24 +15,22 @@ export interface ConnectModalProps {
 export const ConnectModal: React.FC<ConnectModalProps> = ({ onClose }) => {
     const { data } = useAccount();
     const { connect: metamaskConnect } = useConnect({ connector: new MetaMaskConnector() });
-    // const { connect: walletConnectConnect } = useConnect({
-    //     connector: new WalletConnectConnector({
-    //         options: {
-    //             qrcode: true
-    //         }
-    //     })
-    // });
+    const { connect: walletConnectConnect } = useConnect({
+        connector: new WalletConnectConnector({
+            options: {
+                qrcode: true
+            }
+        })
+    });
 
     useEffect(() => {
         if (data) {
-            // console.log('connect modal');
-            // console.log(data);
             onClose();
         }
     }, [data]);
 
     const onClickMetaMask = useCallback(() => metamaskConnect(), []);
-    // const onClickWalletConnect = useCallback(() => walletConnectConnect(), []);
+    const onClickWalletConnect = useCallback(() => walletConnectConnect(), []);
 
     return (
         <Modal isOpen onClose={onClose}>
@@ -43,7 +41,7 @@ export const ConnectModal: React.FC<ConnectModalProps> = ({ onClose }) => {
                 <ModalBody pb='30px'>
                     <VStack spacing='20px'>
                         <WalletButton name='MetaMask' src='/wallets/metamask.png' onClick={onClickMetaMask} />
-                        {/* <WalletButton name='WalletConnect' src='/wallets/walletconnect.svg' onClick={onClickWalletConnect} /> */}
+                        <WalletButton name='WalletConnect' src='/wallets/walletconnect.svg' onClick={onClickWalletConnect} />
                     </VStack>
                 </ModalBody>
             </ModalContent>

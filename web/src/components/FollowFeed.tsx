@@ -41,7 +41,7 @@ const FeedItem = ({ imageUrl, name, bio, handle }) => {
                     <HStack pt='8px'>
                         <Image src='/clock.svg' boxSize='16px' />
                         <Text as='span' color='gray.400' fontSize='12px'>
-                            Followed 5 mins ago
+                          Followed <b>5</b> mins ago
                         </Text>
                     </HStack>
                 </VStack>
@@ -70,7 +70,7 @@ export const FollowFeed: React.FC<BoxProps> = (props) => {
                 </Text>
                 <HStack mt='40px'>
                     <Image src='/users.svg' boxSize='16px' />
-                    <Text color='gray.400'>{following.length} profiles followed via Flourish</Text>
+                    <Text color='gray.400'><b>{following.length}</b> profiles followed via Flourish</Text>
                 </HStack>
             </Box>
             <OrderedList ml='0'>
