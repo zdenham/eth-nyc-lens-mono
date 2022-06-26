@@ -43,8 +43,6 @@ app.post('/users-close-to-me', (req, res) => {
         }
     );
 
-    console.log('RETURNING: ', allCloseUsers);
-
     res.send(JSON.stringify({ data: allCloseUsers }));
 });
 

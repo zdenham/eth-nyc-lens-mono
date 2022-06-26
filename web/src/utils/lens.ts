@@ -95,7 +95,6 @@ export const useProfile = () => {
 
     const fetchProfile = async (address: string) => {
         try {
-            console.log('FETCHING PROFILE');
             setError('');
             setIsFetching(true);
 
