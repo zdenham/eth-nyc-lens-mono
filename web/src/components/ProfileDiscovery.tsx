@@ -10,12 +10,13 @@ import { Profile } from './Profile';
 export const ProfileDiscovery: React.FC<BoxProps> = ({ ...otherProps }) => {
     const { closeUsers } = useCloseUsers();
     const [ids, setIds] = useState([]);
+    const [unChecked, setUnchecked] = useState({});
 
     const { followAll, isFetching, error } = useFollowAll();
     const { refreshFollowing } = useFollowing();
 
     useEffect(() => {
-        const newIds = closeUsers.map((user) => user.id);
+        const newIds = closeUsers.map((user) => user.id).filter((id) => !unChecked[id]);
         setIds(newIds);
     }, [closeUsers]);
 
@@ -57,8 +58,14 @@ export const ProfileDiscovery: React.FC<BoxProps> = ({ ...otherProps }) => {
                                 selected={ids.includes(profile.id)}
                                 onClick={
                                     ids.includes(profile.id)
-                                        ? () => setIds((state) => state.filter((id) => id !== profile.id))
-                                        : () => setIds((state) => [...state, profile.id])
+                                        ? () => {
+                                              setIds((state) => state.filter((id) => id !== profile.id));
+                                              setUnchecked({ ...unChecked, [profile.id]: true });
+                                          }
+                                        : () => {
+                                              setIds((state) => [...state, profile.id]);
+                                              setUnchecked({ ...unChecked, [profile.id]: false });
+                                          }
                                 }
                             />
                         </ListItem>
@@ -73,7 +80,8 @@ export const ProfileDiscovery: React.FC<BoxProps> = ({ ...otherProps }) => {
                 </VStack>
             )}
             {closeUsers.length > 0 && (
-                <Flex justifyContent='center'>
+                <Flex alignItems='center' flexDirection='column'>
+                    {error ? <Text padding='20px'>{error}</Text> : null}
                     <Button
                         disabled={!ids.length}
                         mt='40px'
@@ -83,7 +91,6 @@ export const ProfileDiscovery: React.FC<BoxProps> = ({ ...otherProps }) => {
                     >
                         Follow {ids.length} Profile{ids.length === 1 ? '' : 's'}
                     </Button>
-                    {error ? <Text>{error}</Text> : null}
                 </Flex>
             )}
         </Box>

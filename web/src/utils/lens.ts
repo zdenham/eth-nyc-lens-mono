@@ -1,6 +1,7 @@
 import { ethers, Signer } from 'ethers';
 import { useState, useCallback, useEffect } from 'react';
 import { useSigner } from 'wagmi';
+import { stringify } from 'querystring';
 import fetchProfileQuery from './graphql/fetchProfileQuery';
 import type { LensHub } from './LensHub';
 import requestChallenge from './graphql/requestChallenge';
@@ -82,18 +83,27 @@ export const loginLens = async (signer: Signer) => {
     return { accessToken, refreshToken };
 };
 
-const transformProfile = (lensProfile: any): Profile => {
+const transformProfile = (lensProfile: any, address: string): Profile => {
     // note: we just go with the first profile for now
 
     if (!lensProfile) {
-        throw new Error('No Profile found');
+        return {
+            id: '0x0',
+            address,
+            name: '',
+            handle: '',
+            bio: '',
+            numFollowers: 0,
+            numFollowing: 0,
+            imageUrl: '',
+        };
     }
 
     return {
         id: lensProfile.id,
         name: lensProfile.name,
         handle: lensProfile.handle,
-        address: lensProfile.ownedBy,
+        address,
         bio: lensProfile.bio,
         numFollowers: lensProfile.stats.totalFollowers,
         numFollowing: lensProfile.stats.totalFollowing,
@@ -110,7 +120,7 @@ export const filterOutFollowedUsers = async (
 
     const followedIds = data.following.items.map((item) => item.profile.id);
 
-    return users.filter((user) => !followedIds.includes(user.id));
+    return users.filter((user) => !followedIds.includes(user.id) && user.handle.length > 0);
 };
 
 // TODO - implement filtering via flourish based on local storage
@@ -138,7 +148,7 @@ export const useFollowing = () => {
             );
 
             const followedProfiles = data.following.items.map((item) => ({
-                ...transformProfile(item.profile),
+                ...transformProfile(item.profile, item.profile.ownedBy),
                 followedAt: followedAtMap[item.profile.id],
             }));
 
@@ -182,7 +192,7 @@ export const useProfile = () => {
             const res = await fetchGraphql(query);
             const data = await res.json();
 
-            setProfile(transformProfile(data.data.profiles.items[0]));
+            setProfile(transformProfile(data.data.profiles.items[0], address));
             setIsFetching(false);
         } catch (e) {
             console.log('ERROR: ', e);
