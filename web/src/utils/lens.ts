@@ -86,9 +86,8 @@ export const loginLens = async (signer: Signer) => {
     return { accessToken, refreshToken };
 };
 
-const transformProfile = (response: any): Profile => {
+const transformProfile = (lensProfile: any): Profile => {
     // note: we just go with the first profile for now
-    const lensProfile = response.data.profiles.items[0];
 
     if (!lensProfile) {
         throw new Error('No Profile found');
@@ -118,6 +117,46 @@ export const filterOutFollowedUsers = async (
     return users.filter((user) => !followedIds.includes(user.id));
 };
 
+export const useFollowing = () => {
+    const [myFollowing, setMyFollowing] = useState<Profile[]>([]);
+    const [error, setErr] = useState('');
+    const [isFetching, setIsFetching] = useState(false);
+    const { data: signer } = useSigner();
+
+    const refreshFollowing = useCallback(async () => {
+        try {
+            setIsFetching(true);
+            setErr('');
+            if (!signer) {
+                throw new Error('NOT SIGNED IN!!!');
+            }
+            const address = await signer.getAddress();
+
+            const res = await fetchGraphql(following(address));
+            const { data } = await res.json();
+
+            const followedProfiles = data.following.items.map((item) =>
+                transformProfile(item.profile)
+            );
+
+            setMyFollowing(followedProfiles);
+            setIsFetching(false);
+        } catch (e) {
+            setIsFetching(false);
+            setErr(e.message);
+        }
+    }, [signer]);
+
+    useEffect(() => {}, [signer]);
+
+    return {
+        following: myFollowing,
+        refreshFollowing,
+        isFetching,
+        error,
+    };
+};
+
 export const useProfile = () => {
     const [isFetching, setIsFetching] = useState(false);
     const [profile, setProfile] = useState<Profile | null>(null);
@@ -133,11 +172,12 @@ export const useProfile = () => {
             const res = await fetchGraphql(query);
             const data = await res.json();
 
-            setProfile(transformProfile(data));
+            setProfile(transformProfile(data.data.profiles.items[0]));
             setIsFetching(false);
         } catch (e) {
             console.log('ERROR: ', e);
             setError(e.message);
+            setIsFetching(false);
         }
     };
 
@@ -181,6 +221,7 @@ export const useFollowAll = () => {
                 setIsFetching(false);
             } catch (e) {
                 setError(e.message);
+                setIsFetching(false);
             }
         },
         [setError, setIsFetching, signer]
