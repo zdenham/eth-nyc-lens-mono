@@ -10,12 +10,13 @@ import { Profile } from './Profile';
 export const ProfileDiscovery: React.FC<BoxProps> = ({ ...otherProps }) => {
     const { closeUsers } = useCloseUsers();
     const [ids, setIds] = useState([]);
+    const [unChecked, setUnchecked] = useState({});
 
     const { followAll, isFetching, error } = useFollowAll();
     const { refreshFollowing } = useFollowing();
 
     useEffect(() => {
-        const newIds = closeUsers.map((user) => user.id);
+        const newIds = closeUsers.map((user) => user.id).filter((id) => !unChecked[id]);
         setIds(newIds);
     }, [closeUsers]);
 
@@ -57,8 +58,14 @@ export const ProfileDiscovery: React.FC<BoxProps> = ({ ...otherProps }) => {
                                 selected={ids.includes(profile.id)}
                                 onClick={
                                     ids.includes(profile.id)
-                                        ? () => setIds((state) => state.filter((id) => id !== profile.id))
-                                        : () => setIds((state) => [...state, profile.id])
+                                        ? () => {
+                                              setIds((state) => state.filter((id) => id !== profile.id));
+                                              setUnchecked({ ...unChecked, [profile.id]: true });
+                                          }
+                                        : () => {
+                                              setIds((state) => [...state, profile.id]);
+                                              setUnchecked({ ...unChecked, [profile.id]: false });
+                                          }
                                 }
                             />
                         </ListItem>
