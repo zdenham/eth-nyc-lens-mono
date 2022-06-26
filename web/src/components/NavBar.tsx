@@ -1,15 +1,17 @@
-import { Avatar, Button, HStack, Image, Text } from '@chakra-ui/react';
+import { Avatar, Button, HStack, Image, Text, VStack } from '@chakra-ui/react';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import React, { useCallback, useState, useEffect } from 'react';
 import { useAccount } from 'wagmi';
 
 import { navBarHeight, pagePaddingX, zIndexes } from '../constants';
+import { useProfile } from '../utils/lens';
 import { ConnectWalletButton } from './ConnectWalletButton';
 
 export const NavBar: React.FC = () => {
     const { push } = useRouter();
     const { data } = useAccount();
+    const { profile } = useProfile();
 
     const goToApp = useCallback(() => push('/dashboard'), []);
 
@@ -40,14 +42,22 @@ export const NavBar: React.FC = () => {
             </Link>
             {(mounted || null)
                 && (data?.address ? (
-                    <HStack>
-                        <Button bg='transparent' _hover={{ bg: 'white' }} onClick={goToApp}>
-                            <Avatar name={data.address} src='/user.svg' bg='white' boxSize='24px' />
-                            <Text as='span' ml='4px'>
-                                {`${data.address.slice(0, 4)}...${data.address.slice(-4)}`}
-                            </Text>
-                        </Button>
-                    </HStack>
+                    <Button bg='transparent' _hover={{ bg: 'transparent', opacity: 0.7 }} onClick={goToApp}>
+                        <HStack>
+                            <Avatar
+                                name={data.address}
+                                src={profile?.imageUrl || '/user.svg'}
+                                bg='white'
+                                boxSize='32px'
+                            />
+                            <VStack alignItems='flex-start' spacing='4px'>
+                                <Text as='span' fontSize='12px'>{profile?.handle}</Text>
+                                <Text as='span' ml='4px' fontSize='10px' fontWeight={400}>
+                                    {`${data.address.slice(0, 6)}...${data.address.slice(-4)}`}
+                                </Text>
+                            </VStack>
+                        </HStack>
+                    </Button>
                 ) : (
                     <ConnectWalletButton />
                 ))}
