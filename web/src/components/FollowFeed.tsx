@@ -14,7 +14,7 @@ export interface FeedItemProps {
     readonly timestamp?: string;
 }
 
-const FeedItem: React.FC<Profile & { followedAt?: number; }> = ({ imageUrl, name, bio, handle, followedAt }) => {
+const FeedItem: React.FC<Profile & { followedAt?: number }> = ({ imageUrl, name, bio, handle, followedAt }) => {
     const { push } = useRouter();
 
     const timeDiff = formatTimeDifference(followedAt);
@@ -29,7 +29,7 @@ const FeedItem: React.FC<Profile & { followedAt?: number; }> = ({ imageUrl, name
             rounded='0'
             _hover={{ bg: 'gray.100' }}
             borderTop='2px solid #ECECEC'
-            onClick={() => push(`https://lenster.xyz/u/${handle}`)}
+            onClick={() => push(`https://testnet.lenster.xyz/u/${handle}`)}
         >
             <HStack alignItems='flex-start' px='20px' py='16px'>
                 <Image src={imageUrl} w='60px' h='60px' borderRadius='50%' />
@@ -67,8 +67,15 @@ export const FollowFeed: React.FC<BoxProps> = (props) => {
     return (
         <Box pt='40px' {...props}>
             <Box px='20px'>
-                <Heading as='h2' fontSize='16px'>Follow Feed</Heading>
-                <Text>Look through all the friends you made through Flourish. Interact with a profile to visit their <Link href='https://lenster.xyz' target='_blank' textDecor='underline'>Lenster</Link> profile.
+                <Heading as='h2' fontSize='16px'>
+                    Follow Feed
+                </Heading>
+                <Text>
+                    Look through all the friends you made through Flourish. Interact with a profile to visit their{' '}
+                    <Link href='https://testnet.lenster.xyz' target='_blank' textDecor='underline'>
+                        Lenster
+                    </Link>{' '}
+                    profile.
                 </Text>
                 {following.length > 0 && (
                     <HStack mt='40px' justifyContent={{ base: 'center', md: 'flex-start' }}>
