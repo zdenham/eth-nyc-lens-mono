@@ -25,6 +25,7 @@ const theme = extendTheme({
     breakpoints,
     shadows: {
         glow: '0px 0px 7px 2px green;',
+        'glow-yellow': '0px 0px 7px 2px #ffab00;',
         all: '0 25px 50px -12px rgba(0, 0, 0, 0.25), 0 -25px 50px -12px rgba(0, 0, 0, 0.25);'
         // glow: '0px 0px 10px 5px light-green;'
     }

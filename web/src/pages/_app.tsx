@@ -1,3 +1,4 @@
+/* eslint-disable max-len */
 import { ChakraProvider, useDisclosure } from '@chakra-ui/react';
 import '@fontsource/poppins';
 import { AppProps } from 'next/app';
@@ -11,6 +12,7 @@ import { NavBar } from '../components/NavBar';
 import { ConnectWalletModalContext } from '../hooks/useConnectWalletModal';
 import { ConnectModal } from '../components/ConnectModal';
 import { Footer } from '../components/Footer';
+import { Banner } from '../components/Banner';
 
 const wagmiClient = createClient({ autoConnect: true });
 
@@ -25,10 +27,9 @@ function App({ Component, pageProps }: AppProps) {
     return (
         <ChakraProvider resetCSS theme={theme}>
             <WagmiConfig client={wagmiClient}>
-                <ConnectWalletModalContext.Provider
-                    value={connectWalletModalContextProviderValue}
-                >
+                <ConnectWalletModalContext.Provider value={connectWalletModalContextProviderValue}>
                     <NavBar />
+                    <Banner />
                     <Component {...pageProps} />
                     <Footer />
                     {isOpen && <ConnectModal onClose={onClose} />}
