@@ -38,7 +38,7 @@ const FeedItem = ({ imageUrl, name, bio, handle }) => {
             onClick={() => push(`https://lenster.xyz/u/${handle}`)}
         >
             <HStack alignItems="flex-start" px="20px" py="16px">
-                <Image src={imageUrl} />
+                <Image src={imageUrl} w="60px" h="60px" />
                 <VStack alignItems="flex-start" spacing="0" fontWeight={400}>
                     <HStack>
                         <Text as="span" fontWeight="bold">
@@ -66,34 +66,36 @@ export const FollowFeed: React.FC<BoxProps> = (props) => {
 
     console.log('FOLLOWING: ', following);
 
-    <Box pt="40px" {...props}>
-        <Box px="20px" shadow="lg">
-            <Heading as="h2" fontSize="16px">
-                Follow Feed
-            </Heading>
-            <Text>
-                Look through all the friends you made through Flourish. Interact
-                with a profile to visit their{' '}
-                <Link
-                    href="https://lenster.xyz"
-                    target="_blank"
-                    textDecor="underline"
-                >
-                    Lenster
-                </Link>{' '}
-                profile.
-            </Text>
-            <HStack mt="40px">
-                <Image src="/users.svg" boxSize="16px" />
-                <Text color="gray.400">
-                    {following.length} profiles followed via Flourish
+    return (
+        <Box pt="40px" {...props}>
+            <Box px="20px" shadow="lg">
+                <Heading as="h2" fontSize="16px">
+                    Follow Feed
+                </Heading>
+                <Text>
+                    Look through all the friends you made through Flourish.
+                    Interact with a profile to visit their{' '}
+                    <Link
+                        href="https://lenster.xyz"
+                        target="_blank"
+                        textDecor="underline"
+                    >
+                        Lenster
+                    </Link>{' '}
+                    profile.
                 </Text>
-            </HStack>
+                <HStack mt="40px">
+                    <Image src="/users.svg" boxSize="16px" />
+                    <Text color="gray.400">
+                        {following.length} profiles followed via Flourish
+                    </Text>
+                </HStack>
+            </Box>
+            <OrderedList ml="0">
+                {following.map((feedItem) => (
+                    <FeedItem key={feedItem.handle} {...feedItem} />
+                ))}
+            </OrderedList>
         </Box>
-        <OrderedList ml="0">
-            {following.map((feedItem) => (
-                <FeedItem key={feedItem.handle} {...feedItem} />
-            ))}
-        </OrderedList>
-    </Box>;
+    );
 };
