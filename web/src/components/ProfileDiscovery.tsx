@@ -10,7 +10,7 @@ const dummyProfiles: ProfileProps[] = [{
     imageUrl: '/dan.png',
     name: 'Dan Abramov',
     handle: '@dan.lens',
-    bio: 'lorem ipsum da da id est cum sum',
+    bio: 'lorem ipsum da da id est cum sum lorem ipsum da da id est cum sum',
 }, {
     id: '2',
     address: '0xc4DaD120712A92117Cc65D46514BE8B49ED846a1',
@@ -41,7 +41,7 @@ export const ProfileDiscovery: React.FC<BoxProps> = ({ ...otherProps }) => {
         <Box py='40px' px={pagePaddingX} {...otherProps}>
             <Heading as='h2' fontSize='16px'>Profile Discovery</Heading>
             <Text>Interact with a profile to toggle its selection. The button below will follow all selected profiles at once.</Text>
-            <HStack mt='40px'>
+            <HStack mt='40px' justifyContent={{ base: 'center', md: 'flex-start' }}>
                 <Image src='/users.svg' boxSize='16px' />
                 <Text color='gray.400'><b>4</b> profiles found</Text>
             </HStack>
