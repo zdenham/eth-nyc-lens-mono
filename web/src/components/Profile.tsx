@@ -16,6 +16,8 @@ export const Profile: React.FC<ProfileProps> = ({
     bio,
     handle,
     lastSeenTimestamp,
+    numFollowers,
+    numFollowing,
     onClick,
     ...otherProps
 }) => {
