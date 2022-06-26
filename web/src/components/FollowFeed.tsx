@@ -1,7 +1,7 @@
 import { Box, BoxProps, Button, Heading, HStack, Image, Link, OrderedList, Text, VStack } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
 import React from 'react';
-import { useFollowing } from '../utils/lens';
+import { Profile, useFollowing } from '../utils/lens';
 
 export interface FeedItemProps {
     readonly src: string;
@@ -9,10 +9,9 @@ export interface FeedItemProps {
     readonly handle: string;
     readonly bio: string;
     readonly timestamp?: string;
-    readonly followedAt?: number;
 }
 
-const FeedItem = ({ imageUrl, name, bio, handle, followedAt }) => {
+const FeedItem: React.FC<Profile & { followedAt?: number }> = ({ imageUrl, name, bio, handle, followedAt }) => {
     const { push } = useRouter();
 
     const timeDiff = followedAt && Math.floor(((Date.now() - followedAt) / 60) * 1000);

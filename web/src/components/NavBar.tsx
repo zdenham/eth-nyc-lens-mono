@@ -25,49 +25,37 @@ export const NavBar: React.FC = () => {
 
     return (
         <HStack
-            position="fixed"
-            w="100vw"
-            as="header"
-            justifyContent="space-between"
-            alignItems="center"
-            top="0"
-            shadow="lg"
+            position='fixed'
+            w='100vw'
+            as='header'
+            justifyContent='space-between'
+            alignItems='center'
+            top='0'
+            shadow='lg'
             zIndex={zIndexes.navBar}
             height={navBarHeight}
             paddingX={pagePaddingX}
-            spacing="10px"
-            bg="gray.50"
+            spacing='10px'
+            bg='gray.50'
         >
-            <Link href="/">
+            <Link href='/'>
                 <a>
-                    <Image src="/wordmark.svg" alt="Flourish logo" h="40px" />
+                    <Image src='/wordmark.svg' alt='Flourish logo' h='40px' />
                 </a>
             </Link>
-            {(mounted || null) &&
-                (data?.address ? (
-                    <HStack>
-                        <Button
-                            bg="transparent"
-                            _hover={{ bg: 'white' }}
-                            onClick={goToApp}
-                        >
-                            <Avatar
-                                name={data.address}
-                                src="/user.svg"
-                                bg="white"
-                                boxSize="24px"
-                            />
-                            <Text as="span" ml="4px">
-                                {`${data.address.slice(
-                                    0,
-                                    4
-                                )}...${data.address.slice(-4)}`}
-                            </Text>
-                        </Button>
-                    </HStack>
-                ) : (
-                    <ConnectWalletButton />
-                ))}
+            {(mounted || null)
+            && (data?.address ? (
+                <HStack>
+                    <Button bg='transparent' _hover={{ bg: 'white' }} onClick={goToApp}>
+                        <Avatar name={data.address} src='/user.svg' bg='white' boxSize='24px' />
+                        <Text as='span' ml='4px'>
+                            {`${data.address.slice(0, 4)}...${data.address.slice(-4)}`}
+                        </Text>
+                    </Button>
+                </HStack>
+            ) : (
+                <ConnectWalletButton />
+            ))}
         </HStack>
     );
 };

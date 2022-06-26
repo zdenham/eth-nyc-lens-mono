@@ -114,7 +114,7 @@ export const filterOutFollowedUsers = async (
 
 // TODO - implement filtering via flourish based on local storage
 export const useFollowing = () => {
-    const [myFollowing, setMyFollowing] = useState<Profile[]>([]);
+    const [myFollowing, setMyFollowing] = useState<Profile[] & { followedAt?: number }>([]);
     const [error, setErr] = useState('');
     const [isFetching, setIsFetching] = useState(false);
     const { data: signer } = useSigner();
