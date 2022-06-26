@@ -46,7 +46,7 @@ export const Banner: React.FC = () => {
     const { activeChain, switchNetwork } = useNetwork();
     console.log(activeChain);
 
-    const switchToMumbai = useCallback(() => switchNetwork(80001), [switchNetwork]);
+    const switchToMumbai = useCallback(() => switchNetwork(137), [switchNetwork]);
 
     return (
         activeChain
