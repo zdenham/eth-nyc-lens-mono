@@ -1,10 +1,5 @@
 import { useEffect, useState, useCallback } from 'react';
-import {
-    ProfileWithLocation,
-    Location,
-    useProfile,
-    filterOutFollowedUsers,
-} from './lens';
+import { ProfileWithLocation, Location, useProfile, filterOutFollowedUsers } from './lens';
 
 export const useLocation = () => {
     const [err, setErr] = useState('');
@@ -43,9 +38,7 @@ export const useLocation = () => {
 // TODO - dedoop against follows
 export const useCloseUsers = () => {
     const [error, setError] = useState('');
-    const [closeUsers, setCloseUsers] = useState<ProfileWithLocation[] | null>(
-        null
-    );
+    const [closeUsers, setCloseUsers] = useState<ProfileWithLocation[] | null>(null);
     const { profile } = useProfile();
     const { location } = useLocation();
 
@@ -61,7 +54,7 @@ export const useCloseUsers = () => {
                 lastSeenTimestamp: Date.now(),
             };
 
-            const res = await fetch('http://localhost:3500/users-close-to-me', {
+            const res = await fetch('https://flourish-api.onrender.com/users-close-to-me', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -71,10 +64,7 @@ export const useCloseUsers = () => {
 
             const { data } = await res.json();
 
-            const usersToDiscover = await filterOutFollowedUsers(
-                profile.address,
-                data
-            );
+            const usersToDiscover = await filterOutFollowedUsers(profile.address, data);
 
             setCloseUsers(usersToDiscover);
         } catch (e) {
