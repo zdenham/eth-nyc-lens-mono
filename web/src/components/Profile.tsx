@@ -12,6 +12,7 @@ export interface ProfileProps extends ProfileModel, Omit<ButtonProps, 'name' | '
 export const Profile: React.FC<ProfileProps> = ({
     selected,
     imageUrl,
+    address,
     name,
     bio,
     handle,
@@ -47,7 +48,7 @@ export const Profile: React.FC<ProfileProps> = ({
                                 {name}
                             </Text>
                         )}
-                        <Text as='span'>{handle}</Text>
+                        <Text as='span'>{handle || address}</Text>
                     </HStack>
                     <Text
                         display={{ base: 'none', xl: 'block' }}
