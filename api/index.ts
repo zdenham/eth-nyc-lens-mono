@@ -11,7 +11,7 @@ type ProfileWithLocation = {
     bio: string;
 };
 
-let allUsers: { [key: string]: ProfileWithLocation } = {};
+let allUsers: { [id: string]: ProfileWithLocation } = {};
 
 import cors from 'cors';
 import express from 'express';
@@ -21,18 +21,9 @@ const port = 3500;
 app.use(cors());
 app.use(express.json());
 
-app.post('/update-coords', (req, res) => {
-    console.log('THE BODY: ', req.body);
-
-    const userToUpdate = req.body;
-
-    allUsers[userToUpdate.id] = userToUpdate;
-
-    res.send('Success!');
-});
-
 app.post('/users-close-to-me', (req, res) => {
     const myUser = req.body;
+    allUsers[myUser.id] = myUser;
     const allCloseUsers = Object.values(allUsers).filter(
         (user: ProfileWithLocation) => {
             const milesPerLatitude = 69; // ...
@@ -51,6 +42,8 @@ app.post('/users-close-to-me', (req, res) => {
             );
         }
     );
+
+    console.log('RETURNING: ', allCloseUsers);
 
     res.send(JSON.stringify({ data: allCloseUsers }));
 });
