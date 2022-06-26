@@ -37,7 +37,7 @@ export const ProfileDiscovery: React.FC<BoxProps> = ({ ...otherProps }) => {
                 <HStack mt='40px'>
                     <Image src='/users.svg' boxSize='16px' />
                     <Text color='gray.400'>
-                        <b>4</b> profiles found
+                        <b>{closeUsers.length}</b> profiles found
                     </Text>
                 </HStack>
             )}
@@ -74,7 +74,13 @@ export const ProfileDiscovery: React.FC<BoxProps> = ({ ...otherProps }) => {
             )}
             {closeUsers.length > 0 && (
                 <Flex justifyContent='center'>
-                    <Button disabled={!ids.length} mt='40px'>
+                    <Button
+                        disabled={!ids.length}
+                        mt='40px'
+                        isLoading={isFetching}
+                        loadingText='waiting...'
+                        onClick={handleFollowClick}
+                    >
                         Follow {ids.length} Profile{ids.length === 1 ? '' : 's'}
                     </Button>
                     {error ? <Text>{error}</Text> : null}
