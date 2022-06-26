@@ -120,7 +120,7 @@ export const filterOutFollowedUsers = async (
 
     const followedIds = data.following.items.map((item) => item.profile.id);
 
-    return users.filter((user) => !followedIds.includes(user.id));
+    return users.filter((user) => !followedIds.includes(user.id) && user.handle.length > 0);
 };
 
 // TODO - implement filtering via flourish based on local storage
