@@ -4,11 +4,11 @@ import { useRouter } from 'next/router';
 import { useCallback, useEffect } from 'react';
 import { useAccount } from 'wagmi';
 import { Button } from '../components/Button';
-import { ConnectWallet } from '../components/ConnectWallet';
 import { Container } from '../components/Container';
 import { Hero } from '../components/Hero';
 import { Scene } from '../components/Scene';
 import { WhyFlourishModal } from '../components/WhyFlourishModal';
+import { ConnectWalletButton } from '../components/ConnectWalletButton';
 
 const Index = () => {
     const { push } = useRouter();
@@ -39,7 +39,7 @@ const Index = () => {
                         {data?.address ? (
                             <Button onClick={goToApp}>Go to App</Button>
                         ) : (
-                            <ConnectWallet />
+                            <ConnectWalletButton />
                         )}
                         <Button kind='secondary' onClick={onOpen}>Why Flourish?</Button>
                     </HStack>
