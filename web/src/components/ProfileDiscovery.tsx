@@ -1,48 +1,28 @@
 import { Box, BoxProps, Flex, Heading, HStack, Image, ListItem, OrderedList, Text, VStack } from '@chakra-ui/react';
-import React, { useState } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
+
 import { pagePaddingX } from '../constants';
+import { useFollowAll, useFollowing } from '../utils/lens';
+import { useCloseUsers } from '../utils/navigation';
 import { Button } from './Button';
 import { Profile } from './Profile';
 
-// const dummyProfiles: ProfileProps[] = [
-//     {
-//         id: '1',
-//         address: '0xc4DaD120712A92117Cc65D46514BE8B49ED846a1',
-//         imageUrl: '/dan.png',
-//         name: 'Dan Abramov',
-//         handle: '@dan.lens',
-//         bio: 'lorem ipsum da da id est cum sum',
-//     },
-//     {
-//         id: '2',
-//         address: '0xc4DaD120712A92117Cc65D46514BE8B49ED846a1',
-//         imageUrl: '/dan.png',
-//         name: 'Dan Abramov',
-//         handle: '@dan.lens',
-//         bio: 'lorem ipsum da da id est cum sum',
-//     },
-//     {
-//         id: '3',
-//         address: '0xc4DaD120712A92117Cc65D46514BE8B49ED846a1',
-//         imageUrl: '/dan.png',
-//         name: 'Dan Abramov',
-//         handle: '@dan.lens',
-//         bio: 'lorem ipsum da da id est cum sum',
-//     },
-//     {
-//         id: '4',
-//         address: '0xc4DaD120712A92117Cc65D46514BE8B49ED846a1',
-//         imageUrl: '/dan.png',
-//         name: 'Dan Abramov',
-//         handle: '@dan.lens',
-//         bio: 'lorem ipsum da da id est cum sum',
-//     },
-// ];
-
-const dummyProfiles = [];
-
 export const ProfileDiscovery: React.FC<BoxProps> = ({ ...otherProps }) => {
-    const [ids, setIds] = useState(dummyProfiles.map((profile) => profile.id));
+    const { closeUsers } = useCloseUsers();
+    const [ids, setIds] = useState([]);
+
+    const { followAll, isFetching, error } = useFollowAll();
+    const { refreshFollowing } = useFollowing();
+
+    useEffect(() => {
+        const newIds = closeUsers.map((user) => user.id);
+        setIds(newIds);
+    }, [closeUsers]);
+
+    const handleFollowClick = useCallback(async () => {
+        await followAll(ids);
+        await refreshFollowing();
+    }, [ids]);
 
     return (
         <Box py='40px' px={pagePaddingX} {...otherProps}>
@@ -53,7 +33,7 @@ export const ProfileDiscovery: React.FC<BoxProps> = ({ ...otherProps }) => {
                 Interact with a profile to toggle its selection. The button below will follow all selected profiles at
                 once.
             </Text>
-            {dummyProfiles.length > 0 && (
+            {closeUsers.length > 0 && (
                 <HStack mt='40px'>
                     <Image src='/users.svg' boxSize='16px' />
                     <Text color='gray.400'>
@@ -61,7 +41,7 @@ export const ProfileDiscovery: React.FC<BoxProps> = ({ ...otherProps }) => {
                     </Text>
                 </HStack>
             )}
-            {dummyProfiles.length > 0 ? (
+            {closeUsers.length > 0 ? (
                 <OrderedList
                     listStyleType='none'
                     ml='0'
@@ -70,7 +50,7 @@ export const ProfileDiscovery: React.FC<BoxProps> = ({ ...otherProps }) => {
                     borderColor='#ECECEC'
                     shadow='lg'
                 >
-                    {dummyProfiles.map((profile) => (
+                    {closeUsers.map((profile) => (
                         <ListItem key={profile.id} borderTop='2px solid' borderColor='#ECECEC'>
                             <Profile
                                 {...profile}
@@ -92,11 +72,12 @@ export const ProfileDiscovery: React.FC<BoxProps> = ({ ...otherProps }) => {
                     </Text>
                 </VStack>
             )}
-            {dummyProfiles.length > 0 && (
+            {closeUsers.length > 0 && (
                 <Flex justifyContent='center'>
                     <Button disabled={!ids.length} mt='40px'>
                         Follow {ids.length} Profile{ids.length === 1 ? '' : 's'}
                     </Button>
+                    {error ? <Text>{error}</Text> : null}
                 </Flex>
             )}
         </Box>

@@ -1,11 +1,13 @@
 import { Flex, HStack, Image, Text, Tabs, TabList, TabPanels, Tab, TabPanel } from '@chakra-ui/react';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Container } from '../components/Container';
 import { FollowFeed } from '../components/FollowFeed';
 import { Heading } from '../components/Heading';
 import { ProfileDiscovery } from '../components/ProfileDiscovery';
 import { footerHeight } from '../constants';
 import { useMediaQuery } from '../hooks/useMediaQuery';
+import formatTimeDifference from '../utils/formatTimeDifference';
+import { useCloseUsers } from '../utils/navigation';
 
 // const LoadingScreen = () => (
 //     <VStack spacing='20px'>
@@ -16,7 +18,19 @@ import { useMediaQuery } from '../hooks/useMediaQuery';
 // );
 
 const Dashboard = () => {
-    const [timeSinceLastUpdate] = useState(27);
+    const { lastUpdatedTimestamp } = useCloseUsers();
+    const [lastSeenText, setLastSeenText] = useState('a second');
+
+    useEffect(() => {
+        const interval = setInterval(() => {
+            setLastSeenText(formatTimeDifference(lastUpdatedTimestamp));
+        }, 5000);
+
+        return () => {
+            clearInterval(interval);
+        };
+    }, [lastUpdatedTimestamp]);
+
     const isMobile = useMediaQuery(768);
 
     return (
@@ -25,7 +39,7 @@ const Dashboard = () => {
             <HStack>
                 <Image src='/clock.svg' boxSize='16px' />
                 <Text fontSize='14px' color='gray.400'>
-                    Last updated <b>{timeSinceLastUpdate}</b> secs ago
+                    Last updated <b>{lastSeenText}</b> ago
                 </Text>
             </HStack>
             {isMobile ? (

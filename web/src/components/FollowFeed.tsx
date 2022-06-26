@@ -1,6 +1,7 @@
 import { Box, BoxProps, Button, Flex, Heading, HStack, Image, Link, OrderedList, Text, VStack } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
 import React from 'react';
+import formatTimeDifference from '../utils/formatTimeDifference';
 import { footerHeight, navBarHeight } from '../constants';
 import { Profile, useFollowing } from '../utils/lens';
 
@@ -15,7 +16,7 @@ export interface FeedItemProps {
 const FeedItem: React.FC<Profile & { followedAt?: number; }> = ({ imageUrl, name, bio, handle, followedAt }) => {
     const { push } = useRouter();
 
-    const timeDiff = followedAt && Math.floor(((Date.now() - followedAt) / 60) * 1000);
+    const timeDiff = formatTimeDifference(followedAt);
 
     return (
         <Button
@@ -30,7 +31,7 @@ const FeedItem: React.FC<Profile & { followedAt?: number; }> = ({ imageUrl, name
             onClick={() => push(`https://lenster.xyz/u/${handle}`)}
         >
             <HStack alignItems='flex-start' px='20px' py='16px'>
-                <Image src={imageUrl} w='60px' h='60px' />
+                <Image src={imageUrl} w='60px' h='60px' borderRadius='50%' />
                 <VStack alignItems='flex-start' spacing='0' fontWeight={400}>
                     <HStack>
                         <Text as='span' fontWeight='bold'>
@@ -45,7 +46,7 @@ const FeedItem: React.FC<Profile & { followedAt?: number; }> = ({ imageUrl, name
                         <Image src='/clock.svg' boxSize='16px' />
                         {timeDiff ? (
                             <Text as='span' color='gray.400' fontSize='12px'>
-                                Followed <b>{timeDiff}</b> mins ago
+                                Followed <b>{timeDiff}</b> ago
                             </Text>
                         ) : (
                             <Text as='span' color='gray.400' fontSize='12px'>
