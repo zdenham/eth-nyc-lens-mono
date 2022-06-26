@@ -1,6 +1,6 @@
 import { WagmiConfig, createClient } from 'wagmi';
 
-import { getDefaultProvider, Signer } from 'ethers';
+import { getDefaultProvider } from 'ethers';
 
 import { useEffect } from 'react';
 import { useCloseUsers } from '../utils/navigation';
@@ -14,7 +14,7 @@ function LensProfile() {
 
     return (
         <div>
-            <button type="button">Test Stuff</button>
+            <button type='button'>Test Stuff</button>
         </div>
     );
 }

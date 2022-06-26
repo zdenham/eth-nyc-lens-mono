@@ -52,14 +52,9 @@ const fetchGraphql = async (query: string, token?: string) => {
 };
 
 export const getLensContract = (signer: Signer) => {
-    const lensHubProxyAddressMumbai =
-        '0x60Ae865ee4C725cd04353b5AAb364553f56ceF82';
+    const lensHubProxyAddressMumbai = '0x60Ae865ee4C725cd04353b5AAb364553f56ceF82';
     const ILensHub = require('../../../lens/artifacts/contracts/interfaces/ILensHub.sol/ILensHub.json');
-    const lensHub = ethers.ContractFactory.getContract(
-        lensHubProxyAddressMumbai,
-        ILensHub.abi,
-        signer
-    );
+    const lensHub = ethers.ContractFactory.getContract(lensHubProxyAddressMumbai, ILensHub.abi, signer);
 
     return lensHub as unknown as LensHub;
 };
@@ -117,8 +112,9 @@ export const filterOutFollowedUsers = async (
     return users.filter((user) => !followedIds.includes(user.id));
 };
 
+// TODO - implement filtering via flourish based on local storage
 export const useFollowing = () => {
-    const [myFollowing, setMyFollowing] = useState<Profile[]>([]);
+    const [myFollowing, setMyFollowing] = useState<Profile[] & { followedAt?: number }>([]);
     const [error, setErr] = useState('');
     const [isFetching, setIsFetching] = useState(false);
     const { data: signer } = useSigner();
@@ -132,11 +128,18 @@ export const useFollowing = () => {
             const res = await fetchGraphql(following(address));
             const { data } = await res.json();
 
-            const followedProfiles = data.following.items.map((item) =>
-                transformProfile(item.profile)
+            const followedAtMap = JSON.parse(window.localStorage.getItem('following-via-flourish') || '[]').reduce(
+                (acc, { id, timestamp }) => ({
+                    ...acc,
+                    [id]: timestamp,
+                }),
+                {}
             );
 
-            console.log('ITEMS: ', followedProfiles);
+            const followedProfiles = data.following.items.map((item) => ({
+                ...transformProfile(item.profile),
+                followedAt: followedAtMap[item.profile.id],
+            }));
 
             setMyFollowing(followedProfiles);
             setIsFetching(false);
@@ -217,12 +220,17 @@ export const useFollowAll = () => {
                 }
 
                 const lensHub = getLensContract(signer);
-                const tx = await lensHub.follow(
-                    idsToFollow,
-                    new Array(idsToFollow.length).fill([])
-                );
+                const tx = await lensHub.follow(idsToFollow, new Array(idsToFollow.length).fill([]));
 
                 await tx.wait();
+
+                const followedViaFlourish = JSON.parse(window.localStorage.getItem('following-via-flourish') || '[]');
+                const newFollowedWithDates = idsToFollow.map((id) => ({ id, followedAt: Date.now() }));
+
+                window.localStorage.setItem(
+                    'following-via-flourish',
+                    JSON.stringify([...followedViaFlourish, ...newFollowedWithDates])
+                );
 
                 setIsFetching(false);
             } catch (e) {

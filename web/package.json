@@ -5,6 +5,7 @@
     "clean:next": "rimraf .next",
     "dev": "next",
     "build": "next build",
+    "export": "next export",
     "lint": "eslint",
     "start": "next start"
   },

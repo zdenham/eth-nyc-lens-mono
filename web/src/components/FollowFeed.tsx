@@ -1,7 +1,7 @@
 import { Box, BoxProps, Button, Heading, HStack, Image, Link, OrderedList, Text, VStack } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
 import React from 'react';
-import { useFollowing } from '../utils/lens';
+import { Profile, useFollowing } from '../utils/lens';
 
 export interface FeedItemProps {
     readonly src: string;
@@ -11,8 +11,10 @@ export interface FeedItemProps {
     readonly timestamp?: string;
 }
 
-const FeedItem = ({ imageUrl, name, bio, handle }) => {
+const FeedItem: React.FC<Profile & { followedAt?: number }> = ({ imageUrl, name, bio, handle, followedAt }) => {
     const { push } = useRouter();
+
+    const timeDiff = followedAt && Math.floor(((Date.now() - followedAt) / 60) * 1000);
 
     return (
         <Button
@@ -40,9 +42,15 @@ const FeedItem = ({ imageUrl, name, bio, handle }) => {
                     </Text>
                     <HStack pt='8px'>
                         <Image src='/clock.svg' boxSize='16px' />
-                        <Text as='span' color='gray.400' fontSize='12px'>
-                            Followed <b>5</b> mins ago
-                        </Text>
+                        {timeDiff ? (
+                            <Text as='span' color='gray.400' fontSize='12px'>
+                                Followed <b>{timeDiff}</b> mins ago
+                            </Text>
+                        ) : (
+                            <Text as='span' color='gray.400' fontSize='12px'>
+                                Some time ago.
+                            </Text>
+                        )}
                     </HStack>
                 </VStack>
             </HStack>
@@ -53,8 +61,6 @@ const FeedItem = ({ imageUrl, name, bio, handle }) => {
 export const FollowFeed: React.FC<BoxProps> = (props) => {
     const { following } = useFollowing();
 
-    console.log('FOLLOWING: ', following);
-
     return (
         <Box pt='40px' {...props}>
             <Box px='20px' shadow='lg'>
@@ -62,7 +68,9 @@ export const FollowFeed: React.FC<BoxProps> = (props) => {
                 <Text>Look through all the friends you made through Flourish. Interact with a profile to visit their <Link href='https://lenster.xyz' target='_blank' textDecor='underline'>Lenster</Link> profile.</Text>
                 <HStack mt='40px' justifyContent={{ base: 'center', md: 'flex-start' }}>
                     <Image src='/users.svg' boxSize='16px' />
-                    <Text color='gray.400'><b>{following.length}</b> profiles followed via Flourish</Text>
+                    <Text color='gray.400'>
+                        <b>{following.length}</b> profiles followed via Flourish
+                    </Text>
                 </HStack>
             </Box>
             <OrderedList ml='0'>
