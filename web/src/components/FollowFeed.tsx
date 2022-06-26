@@ -1,6 +1,7 @@
-import { Box, BoxProps, Button, Heading, HStack, Image, Link, OrderedList, Text, VStack } from '@chakra-ui/react';
+import { Box, BoxProps, Button, Flex, Heading, HStack, Image, Link, OrderedList, Text, VStack } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
 import React from 'react';
+import { footerHeight, navBarHeight } from '../constants';
 import { Profile, useFollowing } from '../utils/lens';
 
 export interface FeedItemProps {
@@ -11,7 +12,7 @@ export interface FeedItemProps {
     readonly timestamp?: string;
 }
 
-const FeedItem: React.FC<Profile & { followedAt?: number }> = ({ imageUrl, name, bio, handle, followedAt }) => {
+const FeedItem: React.FC<Profile & { followedAt?: number; }> = ({ imageUrl, name, bio, handle, followedAt }) => {
     const { push } = useRouter();
 
     const timeDiff = followedAt && Math.floor(((Date.now() - followedAt) / 60) * 1000);
@@ -63,21 +64,35 @@ export const FollowFeed: React.FC<BoxProps> = (props) => {
 
     return (
         <Box pt='40px' {...props}>
-            <Box px='20px' shadow='lg'>
+            <Box px='20px'>
                 <Heading as='h2' fontSize='16px'>Follow Feed</Heading>
-                <Text>Look through all the friends you made through Flourish. Interact with a profile to visit their <Link href='https://lenster.xyz' target='_blank' textDecor='underline'>Lenster</Link> profile.</Text>
-                <HStack mt='40px' justifyContent={{ base: 'center', md: 'flex-start' }}>
-                    <Image src='/users.svg' boxSize='16px' />
-                    <Text color='gray.400'>
-                        <b>{following.length}</b> profiles followed via Flourish
-                    </Text>
-                </HStack>
+                <Text>Look through all the friends you made through Flourish. Interact with a profile to visit their <Link href='https://lenster.xyz' target='_blank' textDecor='underline'>Lenster</Link> profile.
+                </Text>
+                {following.length > 0 && (
+                    <HStack mt='40px' justifyContent={{ base: 'center', md: 'flex-start' }}>
+                        <Image src='/users.svg' boxSize='16px' />
+                        <Text color='gray.400'>
+                            <b>{following.length}</b> profiles followed via Flourish
+                        </Text>
+                    </HStack>
+                )}
             </Box>
-            <OrderedList ml='0'>
-                {following.map((feedItem) => (
-                    <FeedItem key={feedItem.handle} {...feedItem} />
-                ))}
-            </OrderedList>
+            {following.length ? (
+                <OrderedList ml='0'>
+                    {following.map((feedItem) => (
+                        <FeedItem key={feedItem.handle} {...feedItem} />
+                    ))}
+                </OrderedList>
+            ) : (
+                <Flex justifyContent='center' alignItems='center' h={`calc(100% - ${navBarHeight} - ${footerHeight})`}>
+                    <VStack px='40px'>
+                        <Image src='/sad.svg' boxSize='24px' />
+                        <Text fontSize='12px' textAlign='center' color='#A0AEC0'>
+                            You haven&apos;t followed anyone yet. Go out and meet some people!
+                        </Text>
+                    </VStack>
+                </Flex>
+            )}
         </Box>
     );
 };
