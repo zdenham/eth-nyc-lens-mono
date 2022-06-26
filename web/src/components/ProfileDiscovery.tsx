@@ -73,17 +73,17 @@ export const ProfileDiscovery: React.FC<BoxProps> = ({ ...otherProps }) => {
                 </VStack>
             )}
             {closeUsers.length > 0 && (
-                <Flex justifyContent='center'>
+                <Flex alignItems='center' flexDirection='column'>
+                    {error ? <Text padding='20px'>{error}</Text> : null}
                     <Button
                         disabled={!ids.length}
                         mt='40px'
                         isLoading={isFetching}
-                        loadingText='waiting...'
+                        loadingText='Waiting...'
                         onClick={handleFollowClick}
                     >
                         Follow {ids.length} Profile{ids.length === 1 ? '' : 's'}
                     </Button>
-                    {error ? <Text>{error}</Text> : null}
                 </Flex>
             )}
         </Box>
