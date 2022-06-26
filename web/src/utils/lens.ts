@@ -2,10 +2,11 @@ import { ethers, Signer } from 'ethers';
 import { useState, useCallback, useEffect } from 'react';
 import { useSigner } from 'wagmi';
 import fetchProfileQuery from './graphql/fetchProfileQuery';
-import type { LensHub } from '../../../lens/typechain-types/LensHub';
+import type { LensHub } from './LensHub';
 import requestChallenge from './graphql/requestChallenge';
 import authenticate from './graphql/authenticate';
 import following from './graphql/following';
+import lensAbi from './lensAbi';
 
 export type Location = {
     lat: number;
@@ -53,8 +54,8 @@ const fetchGraphql = async (query: string, token?: string) => {
 
 export const getLensContract = (signer: Signer) => {
     const lensHubProxyAddressMumbai = '0x60Ae865ee4C725cd04353b5AAb364553f56ceF82';
-    const ILensHub = require('../../../lens/artifacts/contracts/interfaces/ILensHub.sol/ILensHub.json');
-    const lensHub = ethers.ContractFactory.getContract(lensHubProxyAddressMumbai, ILensHub.abi, signer);
+
+    const lensHub = ethers.ContractFactory.getContract(lensHubProxyAddressMumbai, lensAbi, signer);
 
     return lensHub as unknown as LensHub;
 };
