@@ -19,17 +19,9 @@ import { useCloseUsers } from '../utils/navigation';
 
 const Dashboard = () => {
     const { lastUpdatedTimestamp } = useCloseUsers();
-    const [lastSeenText, setLastSeenText] = useState('a second');
-
-    useEffect(() => {
-        const interval = setInterval(() => {
-            setLastSeenText(formatTimeDifference(lastUpdatedTimestamp));
-        }, 5000);
-
-        return () => {
-            clearInterval(interval);
-        };
-    }, [lastUpdatedTimestamp]);
+    const hours = new Date(lastUpdatedTimestamp).getHours();
+    const minutes = new Date(lastUpdatedTimestamp).getMinutes();
+    const dateText = `${hours}:${minutes < 10 ? `0${minutes}` : minutes}`;
 
     const isMobile = useMediaQuery(768);
 
@@ -39,7 +31,7 @@ const Dashboard = () => {
             <HStack>
                 <Image src='/clock.svg' boxSize='16px' />
                 <Text fontSize='14px' color='gray.400'>
-                    Last updated <b>{lastSeenText}</b> ago
+                    Last updated at <b>{dateText}</b>
                 </Text>
             </HStack>
             {isMobile ? (
