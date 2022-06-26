@@ -1,3 +1,4 @@
+/* eslint-disable max-len */
 import { Box, BoxProps, Button, Flex, Heading, HStack, Image, Link, OrderedList, Text, VStack } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
 import React from 'react';
@@ -67,8 +68,7 @@ export const FollowFeed: React.FC<BoxProps> = (props) => {
         <Box pt='40px' {...props}>
             <Box px='20px'>
                 <Heading as='h2' fontSize='16px'>Follow Feed</Heading>
-                <Text>Look through all the friends you made through Flourish. Interact with a profile to visit their
-                    <Link href='https://lenster.xyz' target='_blank' textDecor='underline'>Lenster</Link> profile.
+                <Text>Look through all the friends you made through Flourish. Interact with a profile to visit their <Link href='https://lenster.xyz' target='_blank' textDecor='underline'>Lenster</Link> profile.
                 </Text>
                 {following.length > 0 && (
                     <HStack mt='40px' justifyContent={{ base: 'center', md: 'flex-start' }}>
