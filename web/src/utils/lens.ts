@@ -1,5 +1,5 @@
 import { ethers, Signer } from 'ethers';
-import { useState, useCallback } from 'react';
+import { useState, useCallback, useEffect } from 'react';
 import { useSigner } from 'wagmi';
 import fetchProfileQuery from './graphql/fetchProfileQuery';
 import type { LensHub } from '../../../lens/typechain-types/LensHub';
@@ -87,10 +87,12 @@ const transformProfile = (response: any): Profile => {
     };
 };
 
-export const useFetchProfile = () => {
+export const useProfile = () => {
     const [isFetching, setIsFetching] = useState(false);
     const [profile, setProfile] = useState<Profile | null>(null);
     const [error, setError] = useState('');
+    const { data: signer } = useSigner();
+
     const fetchProfile = async (address: string) => {
         try {
             setError('');
@@ -103,11 +105,22 @@ export const useFetchProfile = () => {
             setProfile(transformProfile(data));
             setIsFetching(false);
         } catch (e) {
+            console.log('ERROR: ', e);
             setError(e.message);
         }
     };
 
-    return [fetchProfile, profile, isFetching, error];
+    useEffect(() => {
+        if (!signer) {
+            return;
+        }
+
+        signer.getAddress().then((address) => {
+            fetchProfile(address);
+        });
+    }, [signer]);
+
+    return { profile, isFetching, error };
 };
 
 export const useFollowAll = () => {
@@ -122,11 +135,17 @@ export const useFollowAll = () => {
                 setError('');
                 setIsFetching(true);
 
+                if (!signer) {
+                    throw new Error('No Signer available');
+                }
+
                 const lensHub = getLensContract(signer);
-                await lensHub.follow(
+                const tx = await lensHub.follow(
                     idsToFollow,
                     new Array(idsToFollow.length).fill([])
                 );
+
+                await tx.wait();
 
                 setIsFetching(false);
             } catch (e) {
@@ -136,5 +155,5 @@ export const useFollowAll = () => {
         [setError, setIsFetching, signer]
     );
 
-    return [followAll, isFetching, error];
+    return { followAll, isFetching, error };
 };

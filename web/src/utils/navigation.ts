@@ -1,5 +1,5 @@
-import { useState } from 'react';
-import type { Profile } from './lens';
+import { useEffect, useState, useCallback } from 'react';
+import { Profile, useProfile } from './lens';
 
 type ProfileWithLocation = {
     location: { lat: number; long: number };
@@ -14,79 +14,90 @@ type ProfileWithLocation = {
     bio: string;
 };
 
-const onPositionUpdate = async (
-    position: GeolocationPosition,
-    profile: Profile
-) => {
-    const myUser = {
-        location: {
+type Location = {
+    lat: number;
+    long: number;
+};
+
+export const useLocation = () => {
+    const [err, setErr] = useState('');
+    const [location, setLocation] = useState<Location | null>(null);
+
+    const onLocationUpdate = async (position: GeolocationPosition) => {
+        const newLocation = {
             lat: position.coords.latitude,
             long: position.coords.longitude,
-        },
-        lastSeenTimestamp: Date.now(),
-        ...profile,
+        };
+
+        setLocation(newLocation);
     };
-    window.localStorage.setItem('latest-profile', JSON.stringify(myUser));
-    await fetch('http://localhost:3500/update-coords', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(myUser),
-    });
+
+    useEffect(() => {
+        window.navigator.geolocation.getCurrentPosition(
+            (el) => onLocationUpdate(el),
+            (e) => {
+                setErr(e.message);
+            },
+            { enableHighAccuracy: true, maximumAge: 60000 }
+        );
+        window.navigator.geolocation.watchPosition(
+            (el) => onLocationUpdate(el),
+            (e) => {
+                setErr(e.message);
+            },
+            { enableHighAccuracy: true, maximumAge: 60000 }
+        );
+    }, []);
+
+    return { err, location };
 };
 
-export const startListening = (profile: Profile) => {
-    window.navigator.geolocation.getCurrentPosition(
-        (el) => onPositionUpdate(el, profile),
-        (e) => {
-            alert(`error ${e}`);
-            console.log('ERROR: ', e);
-        },
-        { enableHighAccuracy: true, maximumAge: 60000 }
-    );
-    window.navigator.geolocation.watchPosition(
-        (el) => onPositionUpdate(el, profile),
-        (e) => {
-            alert(`error ${e}`);
-            console.log('ERROR: ', e);
-        },
-        { enableHighAccuracy: true, maximumAge: 60000 }
-    );
-};
-
-export const useFindCloseUsers = () => {
-    const [isFetching, setIsFetching] = useState(false);
+// polls to find close users
+// TODO - dedoop against follows
+export const useCloseUsers = () => {
     const [error, setError] = useState('');
     const [closeUsers, setCloseUsers] = useState<ProfileWithLocation[] | null>(
         null
     );
+    const { profile } = useProfile();
+    const { location } = useLocation();
 
-    const findCloseUsers = async () => {
+    const findCloseUsers = useCallback(async () => {
         try {
-            setError('');
-            setIsFetching(true);
-            const myProfile = window.localStorage.getItem('latest-profile');
-            if (!myProfile) {
-                throw new Error('Cannot find friends without user location');
+            if (!profile || !location) {
+                return;
             }
+
+            const myUser: ProfileWithLocation = {
+                ...profile,
+                location,
+                lastSeenTimestamp: Date.now(),
+            };
 
             const res = await fetch('http://localhost:3500/users-close-to-me', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: myProfile,
+                body: JSON.stringify(myUser),
             });
 
             const { data } = await res.json();
 
             setCloseUsers(data);
-            setIsFetching(false);
         } catch (e) {
             setError(e.message);
         }
-    };
+    }, [profile, location]);
 
-    return [findCloseUsers, closeUsers, isFetching, error];
+    useEffect(() => {
+        // poll for close users every 3 seconds
+        const interval = setInterval(findCloseUsers, 3000);
+
+        return () => {
+            clearInterval(interval);
+        };
+    }, [profile, location]);
+
+    return { closeUsers, error };
 };
