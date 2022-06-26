@@ -29,7 +29,7 @@ const FeedItem: React.FC<Profile & { followedAt?: number }> = ({ imageUrl, name,
             rounded='0'
             _hover={{ bg: 'gray.100' }}
             borderTop='2px solid #ECECEC'
-            onClick={() => push(`https://testnet.lenster.xyz/u/${handle}`)}
+            onClick={() => push(`https://lenster.xyz/u/${handle}`)}
         >
             <HStack alignItems='flex-start' px='20px' py='16px'>
                 <Image src={imageUrl} w='60px' h='60px' borderRadius='50%' />
@@ -72,7 +72,7 @@ export const FollowFeed: React.FC<BoxProps> = (props) => {
                 </Heading>
                 <Text>
                     Look through all the friends you made through Flourish. Interact with a profile to visit their{' '}
-                    <Link href='https://testnet.lenster.xyz' target='_blank' textDecor='underline'>
+                    <Link href='https://lenster.xyz' target='_blank' textDecor='underline'>
                         Lenster
                     </Link>{' '}
                     profile.

@@ -21,7 +21,9 @@ const WarningBanner: React.FC<WarningBannerProps> = ({ children, buttonText, but
     >
         <HStack>
             <AlertIcon />
-            <AlertDescription fontSize='12px' textAlign='left' lineHeight='1.2'>{children}</AlertDescription>
+            <AlertDescription fontSize='12px' textAlign='left' lineHeight='1.2'>
+                {children}
+            </AlertDescription>
         </HStack>
         <Button
             flexShrink={0}
@@ -46,9 +48,14 @@ export const Banner: React.FC = () => {
 
     const switchToMumbai = useCallback(() => switchNetwork(80001), [switchNetwork]);
 
-    return activeChain && activeChain.id !== 80001 && (
-        <WarningBanner buttonText='Switch Network' buttonOnClick={switchToMumbai}>
-            <>You’re connected to the <b>{activeChain.name}</b> network. Flourish is only live on <b>Polygon&apos;s Mumbai testnet</b>.</>
-        </WarningBanner>
+    return (
+        activeChain &&
+        activeChain.id !== 137 && (
+            <WarningBanner buttonText='Switch Network' buttonOnClick={switchToMumbai}>
+                <>
+                    You’re connected to the <b>{activeChain.name}</b> network. Flourish is live on <b>Polygon</b>.
+                </>
+            </WarningBanner>
+        )
     );
 };
