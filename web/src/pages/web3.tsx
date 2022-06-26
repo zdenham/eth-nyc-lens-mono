@@ -14,9 +14,7 @@ function LensProfile() {
 
     return (
         <div>
-            <button type="button" onClick={() => testStuff()}>
-                Test Stuff
-            </button>
+            <button type="button">Test Stuff</button>
         </div>
     );
 }
