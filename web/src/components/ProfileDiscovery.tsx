@@ -2,7 +2,7 @@ import { Box, BoxProps, Flex, Heading, HStack, Image, ListItem, OrderedList, Tex
 import React, { useState } from 'react';
 import { pagePaddingX } from '../constants';
 import { Button } from './Button';
-import { Profile, ProfileProps } from './Profile';
+import { Profile } from './Profile';
 
 // const dummyProfiles: ProfileProps[] = [
 //     {

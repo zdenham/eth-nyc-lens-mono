@@ -10,11 +10,11 @@ export const Button: React.FC<ButtonProps> = ({ kind = 'primary', ...props }) =>
         position='relative'
         top='0'
         fontFamily='Poppins, sans-serif'
-        color='white'
+        color={kind === 'primary' ? 'white' : 'green'}
         size='md'
         rounded='full'
         border={kind === 'primary' ? undefined : '2px solid green'}
-        shadow='glow'
+        shadow={kind === 'primary' ? 'glow' : undefined}
         py='8px'
         px='24px'
         bg={kind === 'primary' ? 'green' : 'white'}

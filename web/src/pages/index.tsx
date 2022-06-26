@@ -1,5 +1,5 @@
 import confetti from 'canvas-confetti';
-import { VStack } from '@chakra-ui/react';
+import { HStack, useDisclosure, VStack } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
 import { useCallback, useEffect } from 'react';
 import { useAccount } from 'wagmi';
@@ -8,11 +8,12 @@ import { ConnectWallet } from '../components/ConnectWallet';
 import { Container } from '../components/Container';
 import { Hero } from '../components/Hero';
 import { Scene } from '../components/Scene';
-import { ValueProps } from '../components/ValueProps';
+import { WhyFlourishModal } from '../components/WhyFlourishModal';
 
 const Index = () => {
     const { push } = useRouter();
     const { data } = useAccount();
+    const { isOpen, onOpen, onClose } = useDisclosure();
 
     useEffect(() => {
         confetti({
@@ -34,15 +35,17 @@ const Index = () => {
                 <Scene />
                 <Hero flexShrink={0} />
                 <VStack justifyContent='center' flexGrow={1}>
-                    {data?.address ? (
-
-                        <Button onClick={goToApp}>Go to App</Button>
-                    ) : (
-                        <ConnectWallet />
-                    )}
+                    <HStack spacing='16px'>
+                        {data?.address ? (
+                            <Button onClick={goToApp}>Go to App</Button>
+                        ) : (
+                            <ConnectWallet />
+                        )}
+                        <Button kind='secondary' onClick={onOpen}>Why Flourish?</Button>
+                    </HStack>
                 </VStack>
             </Container>
-            <ValueProps />
+            {isOpen && <WhyFlourishModal onClose={onClose} />}
         </>
     );
 };
