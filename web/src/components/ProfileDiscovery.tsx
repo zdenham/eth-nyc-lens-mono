@@ -78,7 +78,7 @@ export const ProfileDiscovery: React.FC<BoxProps> = ({ ...otherProps }) => {
                         disabled={!ids.length}
                         mt='40px'
                         isLoading={isFetching}
-                        loadingText='waiting...'
+                        loadingText='Waiting...'
                         onClick={handleFollowClick}
                     >
                         Follow {ids.length} Profile{ids.length === 1 ? '' : 's'}
