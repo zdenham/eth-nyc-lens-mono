@@ -113,7 +113,7 @@ export const filterOutFollowedUsers = async (
 };
 
 // TODO - implement filtering via flourish based on local storage
-export const useFollowing = (viaFlourish?: boolean) => {
+export const useFollowing = () => {
     const [myFollowing, setMyFollowing] = useState<Profile[]>([]);
     const [error, setErr] = useState('');
     const [isFetching, setIsFetching] = useState(false);
@@ -128,7 +128,18 @@ export const useFollowing = (viaFlourish?: boolean) => {
             const res = await fetchGraphql(following(address));
             const { data } = await res.json();
 
-            const followedProfiles = data.following.items.map((item) => transformProfile(item.profile));
+            const followedAtMap = JSON.parse(window.localStorage.getItem('following-via-flourish') || '[]').reduce(
+                (acc, { id, timestamp }) => ({
+                    ...acc,
+                    [id]: timestamp,
+                }),
+                {}
+            );
+
+            const followedProfiles = data.following.items.map((item) => ({
+                ...transformProfile(item.profile),
+                followedAt: followedAtMap[item.profile.id],
+            }));
 
             setMyFollowing(followedProfiles);
             setIsFetching(false);

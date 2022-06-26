@@ -11,8 +11,10 @@ export interface FeedItemProps {
     readonly timestamp?: string;
 }
 
-const FeedItem = ({ imageUrl, name, bio, handle }) => {
+const FeedItem = ({ imageUrl, name, bio, handle, followedAt }) => {
     const { push } = useRouter();
+
+    const timeDiff = followedAt && Math.floor(((Date.now() - followedAt) / 60) * 1000);
 
     return (
         <Button
@@ -40,9 +42,15 @@ const FeedItem = ({ imageUrl, name, bio, handle }) => {
                     </Text>
                     <HStack pt='8px'>
                         <Image src='/clock.svg' boxSize='16px' />
-                        <Text as='span' color='gray.400' fontSize='12px'>
-                          Followed <b>5</b> mins ago
-                        </Text>
+                        {timeDiff ? (
+                            <Text as='span' color='gray.400' fontSize='12px'>
+                                Followed <b>{timeDiff}</b> mins ago
+                            </Text>
+                        ) : (
+                            <Text as='span' color='gray.400' fontSize='12px'>
+                                Some time ago.
+                            </Text>
+                        )}
                     </HStack>
                 </VStack>
             </HStack>
@@ -52,8 +60,6 @@ const FeedItem = ({ imageUrl, name, bio, handle }) => {
 
 export const FollowFeed: React.FC<BoxProps> = (props) => {
     const { following } = useFollowing();
-
-    console.log('FOLLOWING: ', following);
 
     return (
         <Box pt='40px' {...props}>
@@ -70,7 +76,9 @@ export const FollowFeed: React.FC<BoxProps> = (props) => {
                 </Text>
                 <HStack mt='40px'>
                     <Image src='/users.svg' boxSize='16px' />
-                    <Text color='gray.400'><b>{following.length}</b> profiles followed via Flourish</Text>
+                    <Text color='gray.400'>
+                        <b>{following.length}</b> profiles followed via Flourish
+                    </Text>
                 </HStack>
             </Box>
             <OrderedList ml='0'>
