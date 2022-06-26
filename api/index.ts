@@ -13,8 +13,8 @@ type ProfileWithLocation = {
 
 let allUsers: { [key: string]: ProfileWithLocation } = {};
 
-const cors = require('cors');
-const express = require('express');
+import cors from 'cors';
+import express from 'express';
 const app = express();
 const port = 3500;
 
