@@ -84,8 +84,8 @@ export const FollowFeed: React.FC<BoxProps> = (props) => {
                     ))}
                 </OrderedList>
             ) : (
-                <Flex justifyContent='center' alignItems='center' h={`calc(100% - ${navBarHeight} - ${footerHeight})`}>
-                    <VStack px='40px'>
+                <Flex h={{ base: 'auto', md: `calc(100vh - ${navBarHeight} - ${footerHeight})` }}>
+                    <VStack px='40px' mt='40px' w='100%'>
                         <Image src='/sad.svg' boxSize='24px' />
                         <Text fontSize='12px' textAlign='center' color='#A0AEC0'>
                             You haven&apos;t followed anyone yet. Go out and meet some people!
