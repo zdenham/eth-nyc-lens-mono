@@ -44,7 +44,6 @@ const WarningBanner: React.FC<WarningBannerProps> = ({ children, buttonText, but
 
 export const Banner: React.FC = () => {
     const { activeChain, switchNetwork } = useNetwork();
-    console.log(activeChain);
 
     const switchToMumbai = useCallback(() => switchNetwork(137), [switchNetwork]);
 
