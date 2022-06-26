@@ -127,9 +127,6 @@ export const useFollowing = () => {
         try {
             setIsFetching(true);
             setErr('');
-            if (!signer) {
-                throw new Error('NOT SIGNED IN!!!');
-            }
             const address = await signer.getAddress();
 
             const res = await fetchGraphql(following(address));
@@ -139,15 +136,24 @@ export const useFollowing = () => {
                 transformProfile(item.profile)
             );
 
+            console.log('ITEMS: ', followedProfiles);
+
             setMyFollowing(followedProfiles);
             setIsFetching(false);
         } catch (e) {
+            console.log('ERROR: ', e);
             setIsFetching(false);
             setErr(e.message);
         }
     }, [signer]);
 
-    useEffect(() => {}, [signer]);
+    useEffect(() => {
+        if (!signer) {
+            return;
+        }
+
+        refreshFollowing();
+    }, [signer]);
 
     return {
         following: myFollowing,
