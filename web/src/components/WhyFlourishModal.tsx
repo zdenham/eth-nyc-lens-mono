@@ -1,5 +1,13 @@
 /* eslint-disable max-len */
-import { Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, ModalOverlay } from '@chakra-ui/react';
+import {
+    Modal,
+    ModalBody,
+    ModalCloseButton,
+    ModalContent,
+    ModalFooter,
+    ModalHeader,
+    ModalOverlay,
+} from '@chakra-ui/react';
 import React from 'react';
 import { ValueProps } from '../components/ValueProps';
 import { Button } from './Button';
@@ -18,7 +26,7 @@ export const WhyFlourishModal: React.FC<ConnectModalProps> = ({ onClose }) => (
                 <ValueProps />
             </ModalBody>
             <ModalFooter justifyContent='center' pb='60px'>
-                <Button>Close</Button>
+                <Button onClick={onClose}>Close</Button>
             </ModalFooter>
         </ModalContent>
     </Modal>

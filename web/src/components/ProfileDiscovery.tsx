@@ -23,6 +23,10 @@ export const ProfileDiscovery: React.FC<BoxProps> = ({ ...otherProps }) => {
     const handleFollowClick = useCallback(async () => {
         await followAll(ids);
         await refreshFollowing();
+
+        setTimeout(() => {
+            refreshFollowing();
+        }, 10000);
     }, [ids]);
 
     return (
