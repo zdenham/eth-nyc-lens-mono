@@ -3,6 +3,7 @@ import React from 'react';
 import { useMediaQuery } from '../hooks/useMediaQuery';
 import formatTimeDifference from '../utils/formatTimeDifference';
 import type { Profile as ProfileModel } from '../utils/lens';
+import shortenAddress from '../utils/shortenAddress';
 
 export interface ProfileProps extends ProfileModel, Omit<ButtonProps, 'name' | 'id'> {
     readonly selected?: boolean;
@@ -15,6 +16,7 @@ export const Profile: React.FC<ProfileProps> = ({
     name,
     bio,
     handle,
+    address,
     lastSeenTimestamp,
     numFollowers,
     numFollowing,
@@ -30,11 +32,12 @@ export const Profile: React.FC<ProfileProps> = ({
             rounded='none'
             w='100%'
             h='auto'
+            paddingLeft='5px'
             onClick={onClick}
             {...otherProps}
         >
             <HStack alignItems='flex-start' px={{ base: '12px', lg: '20px' }} py='16px'>
-                <HStack alignItems='center'>
+                <HStack alignItems='flex-start'>
                     {selected && (
                         <Image src='/check.svg' boxSize={{ base: '24px', md: '32px' }} alignSelf='center' mr='12px' />
                     )}
@@ -47,7 +50,7 @@ export const Profile: React.FC<ProfileProps> = ({
                                 {name}
                             </Text>
                         )}
-                        <Text as='span'>{handle}</Text>
+                        <Text as='span'>{handle || shortenAddress(address)}</Text>
                     </HStack>
                     <Text
                         display={{ base: 'none', xl: 'block' }}
