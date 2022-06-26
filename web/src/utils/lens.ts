@@ -107,7 +107,7 @@ export const useFetchProfile = () => {
         }
     };
 
-    return [fetchProfile, profile, isFetching, error];
+    return { fetchProfile, profile, isFetching, error };
 };
 
 export const useFollowAll = () => {
@@ -123,10 +123,12 @@ export const useFollowAll = () => {
                 setIsFetching(true);
 
                 const lensHub = getLensContract(signer);
-                await lensHub.follow(
+                const tx = await lensHub.follow(
                     idsToFollow,
                     new Array(idsToFollow.length).fill([])
                 );
+
+                await tx.wait();
 
                 setIsFetching(false);
             } catch (e) {
