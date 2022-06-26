@@ -1,4 +1,4 @@
-import { Flex, HStack, Image, Text } from '@chakra-ui/react';
+import { Flex, HStack, Image, Text, Tabs, TabList, TabPanels, Tab, TabPanel } from '@chakra-ui/react';
 import { useState } from 'react';
 import { Container } from '../components/Container';
 import { FollowFeed } from '../components/FollowFeed';
@@ -6,7 +6,6 @@ import { Heading } from '../components/Heading';
 import { ProfileDiscovery } from '../components/ProfileDiscovery';
 import { footerHeight } from '../constants';
 import { useMediaQuery } from '../hooks/useMediaQuery';
-import { Tabs, TabList, TabPanels, Tab, TabPanel } from '@chakra-ui/react';
 
 // const LoadingScreen = () => (
 //     <VStack spacing='20px'>
@@ -25,7 +24,9 @@ const Dashboard = () => {
             <Heading>Your Dashboard</Heading>
             <HStack>
                 <Image src='/clock.svg' boxSize='16px' />
-                <Text fontSize='14px' color='gray.400'>Last updated <b>{timeSinceLastUpdate}</b> secs ago</Text>
+                <Text fontSize='14px' color='gray.400'>
+                    Last updated <b>{timeSinceLastUpdate}</b> secs ago
+                </Text>
             </HStack>
             {isMobile ? (
                 <Tabs align='center' colorScheme='green' mt='20px'>
@@ -47,7 +48,6 @@ const Dashboard = () => {
                     <ProfileDiscovery w='65%' />
                     <FollowFeed w='35%' borderLeft='2px solid #ECECEC' />
                 </Flex>
-
             )}
         </Container>
     );
