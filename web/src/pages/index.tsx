@@ -15,7 +15,7 @@ const Index = () => {
     const { push } = useRouter();
     const { data } = useAccount();
     const { isOpen, onOpen, onClose } = useDisclosure();
-    const isMobile = useMediaQuery(768);
+    const isMobile = useMediaQuery(960);
 
     useEffect(() => {
         confetti({
