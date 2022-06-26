@@ -5,6 +5,8 @@ import { FollowFeed } from '../components/FollowFeed';
 import { Heading } from '../components/Heading';
 import { ProfileDiscovery } from '../components/ProfileDiscovery';
 import { footerHeight } from '../constants';
+import { useMediaQuery } from '../hooks/useMediaQuery';
+import { Tabs, TabList, TabPanels, Tab, TabPanel } from '@chakra-ui/react';
 
 // const LoadingScreen = () => (
 //     <VStack spacing='20px'>
@@ -16,6 +18,7 @@ import { footerHeight } from '../constants';
 
 const Dashboard = () => {
     const [timeSinceLastUpdate] = useState(27);
+    const isMobile = useMediaQuery(768);
 
     return (
         <Container mb={footerHeight}>
@@ -24,10 +27,28 @@ const Dashboard = () => {
                 <Image src='/clock.svg' boxSize='16px' />
                 <Text fontSize='14px' color='gray.400'>Last updated <b>{timeSinceLastUpdate}</b> secs ago</Text>
             </HStack>
-            <Flex w='100%' mt='40px' borderTop='2px solid #ECECEC' textAlign='left'>
-                <ProfileDiscovery w='65%' />
-                <FollowFeed w='35%' borderLeft='2px solid #ECECEC' />
-            </Flex>
+            {isMobile ? (
+                <Tabs align='center' colorScheme='green' mt='20px'>
+                    <TabList>
+                        <Tab>Profile Discovery</Tab>
+                        <Tab>Follow Feed</Tab>
+                    </TabList>
+                    <TabPanels>
+                        <TabPanel>
+                            <ProfileDiscovery />
+                        </TabPanel>
+                        <TabPanel p='0'>
+                            <FollowFeed />
+                        </TabPanel>
+                    </TabPanels>
+                </Tabs>
+            ) : (
+                <Flex w='100%' mt='40px' borderTop='2px solid #ECECEC' textAlign='left'>
+                    <ProfileDiscovery w='65%' />
+                    <FollowFeed w='35%' borderLeft='2px solid #ECECEC' />
+                </Flex>
+
+            )}
         </Container>
     );
 };
