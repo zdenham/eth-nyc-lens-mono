@@ -3,6 +3,7 @@ import React from 'react';
 import { useMediaQuery } from '../hooks/useMediaQuery';
 import formatTimeDifference from '../utils/formatTimeDifference';
 import type { Profile as ProfileModel } from '../utils/lens';
+import shortenAddress from '../utils/shortenAddress';
 
 export interface ProfileProps extends ProfileModel, Omit<ButtonProps, 'name' | 'id'> {
     readonly selected?: boolean;
@@ -48,7 +49,7 @@ export const Profile: React.FC<ProfileProps> = ({
                                 {name}
                             </Text>
                         )}
-                        <Text as='span'>{handle || address}</Text>
+                        <Text as='span'>{handle || shortenAddress(address)}</Text>
                     </HStack>
                     <Text
                         display={{ base: 'none', xl: 'block' }}
