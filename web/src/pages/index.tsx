@@ -9,11 +9,13 @@ import { Hero } from '../components/Hero';
 import { Scene } from '../components/Scene';
 import { WhyFlourishModal } from '../components/WhyFlourishModal';
 import { ConnectWalletButton } from '../components/ConnectWalletButton';
+import { useMediaQuery } from '../hooks/useMediaQuery';
 
 const Index = () => {
     const { push } = useRouter();
     const { data } = useAccount();
     const { isOpen, onOpen, onClose } = useDisclosure();
+    const isMobile = useMediaQuery(768);
 
     useEffect(() => {
         confetti({
@@ -32,7 +34,7 @@ const Index = () => {
     return (
         <>
             <Container justifyContent='space-between'>
-                <Scene />
+                {!isMobile && <Scene />}
                 <Hero flexShrink={0} />
                 <VStack justifyContent='center' flexGrow={1}>
                     <HStack spacing='16px'>
