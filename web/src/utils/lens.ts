@@ -41,7 +41,7 @@ export type Profile = {
 const fetchGraphql = async (query: string, token?: string) => {
     const accessHeader = token ? { 'x-access-token': token } : {};
 
-    return fetch('https://api-mumbai.lens.dev', {
+    return fetch('https://api.lens.dev', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
@@ -54,7 +54,7 @@ const fetchGraphql = async (query: string, token?: string) => {
 };
 
 export const getLensContract = (signer: Signer) => {
-    const lensHubProxyAddressMumbai = '0x60Ae865ee4C725cd04353b5AAb364553f56ceF82';
+    const lensHubProxyAddressMumbai = '0xDb46d1Dc155634FbC732f92E853b10B288AD5a1d';
 
     const lensHub = ethers.ContractFactory.getContract(lensHubProxyAddressMumbai, lensAbi, signer);
 
