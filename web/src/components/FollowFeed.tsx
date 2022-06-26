@@ -9,6 +9,7 @@ export interface FeedItemProps {
     readonly handle: string;
     readonly bio: string;
     readonly timestamp?: string;
+    readonly followedAt?: number;
 }
 
 const FeedItem = ({ imageUrl, name, bio, handle, followedAt }) => {
